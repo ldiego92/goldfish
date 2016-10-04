@@ -14,3 +14,13 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/ruta', function (){
+	return "La ruta fuciona";
+});
+
+Route::get('/usuario/{id}', function ($id){
+	return "Usuario id = " . $id;
+});
+
+Route::resource('/book','BookController');
