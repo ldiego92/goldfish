@@ -13,7 +13,12 @@ class CreateAudiovisualMaterialKeyWordsTable extends Migration
     public function up()
     {
         Schema::create('audiovisual_material_key_words', function (Blueprint $table) {
-            $table->increments('id');
+            $table->int('audiovisual_material_id')->unsigned();
+            $table->int('key_word_id')->unsigned();
+
+            $table->primary(['audiovisual_material_id', 'key_word_key']);
+            $table->foreign('audiovisual_material_id')->refence('id')->on('audiovisual_material');
+            $table->foreign('key_word_id')->refence('id')->on('key_word');
             $table->timestamps();
         });
     }
