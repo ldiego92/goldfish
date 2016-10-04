@@ -14,6 +14,7 @@ class CreateCartographicFormatsTable extends Migration
     {
         Schema::create('cartographic_formats', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name');
             $table->timestamps();
         });
     }

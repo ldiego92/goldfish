@@ -14,6 +14,7 @@ class CreateAudiovisualTypesTable extends Migration
     {
         Schema::create('audiovisual_types', function (Blueprint $table) {
             $table->increments('id');
+            $table->string ('name');
             $table->timestamps();
         });
     }
