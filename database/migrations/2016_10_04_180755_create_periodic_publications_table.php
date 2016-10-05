@@ -13,7 +13,10 @@ class CreatePeriodicPublicationsTable extends Migration
     public function up()
     {
         Schema::create('periodic_publications', function (Blueprint $table) {
-            $table->increments('id');
+           $table->increments('id');
+            $table->string('signature');
+            $table->string('ISSN');
+            $table->foreign('editorial_id')->references('id')->on('editoral');
             $table->timestamps();
         });
     }

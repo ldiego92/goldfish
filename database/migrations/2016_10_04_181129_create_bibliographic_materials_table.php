@@ -14,6 +14,10 @@ class CreateBibliographicMaterialsTable extends Migration
     {
         Schema::create('bibliographic_materials', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('year');
+            $table->foreign('editorial_Id')->references('id')->on('editorial');
+            $table->string('signature');
+            $table->string('publication_place');
             $table->timestamps();
         });
     }
