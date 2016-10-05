@@ -14,7 +14,10 @@ class CreatePenaltiesTable extends Migration
     {
         Schema::create('penalties', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('loan_id')->unsigned();
             $table->timestamps();
+			
+			$table->foreing('loan_id')->references('id')->on('loans');
         });
     }
 
