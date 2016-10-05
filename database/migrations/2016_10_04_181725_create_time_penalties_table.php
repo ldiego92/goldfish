@@ -13,7 +13,8 @@ class CreateTimePenaltiesTable extends Migration
     public function up()
     {
         Schema::create('time_penalties', function (Blueprint $table) {
-            $table->increments('id');
+             $table->increments('id');
+            $table->date('penalty_time_finish');
             $table->timestamps();
         });
     }

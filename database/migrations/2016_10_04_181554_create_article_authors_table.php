@@ -13,7 +13,8 @@ class CreateArticleAuthorsTable extends Migration
     public function up()
     {
         Schema::create('article_authors', function (Blueprint $table) {
-            $table->increments('id');
+             $table->foreign('article_id')->references('id')->on('articule');
+             $table->foreign('author_id')->references('id')->on('author');
             $table->timestamps();
         });
     }
