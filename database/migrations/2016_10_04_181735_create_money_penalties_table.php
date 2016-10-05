@@ -14,6 +14,9 @@ class CreateMoneyPenaltiesTable extends Migration
     {
         Schema::create('money_penalties', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('penalty_id')->unsigned();
+            $table->foreign('penalty_id')->references('id')->on('penalty');
+            $table->boolean('canceled');
             $table->timestamps();
         });
     }
