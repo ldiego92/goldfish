@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::resource('loan','LoanController');
+Route::resource('users','UserController');
+Route::get('login','UserController@login');
+Route::get('logout','UserController@logout');
