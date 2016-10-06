@@ -45,9 +45,12 @@ class User extends Model implements AuthenticatableContract,
 		return $this->belongsTo('App\Role');
 	}
 	
-	public function loan() {
+	public function loans() {
 		return $this->hasMany('App\Loan');
 	}
 	
+	public function authorizing_loans() {
+				return $this->hasMany('App\Loan','authorizing_user_id');
+	}
 	
 }
