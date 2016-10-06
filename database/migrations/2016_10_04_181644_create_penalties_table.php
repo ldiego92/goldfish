@@ -17,7 +17,7 @@ class CreatePenaltiesTable extends Migration
             $table->integer('loan_id')->unsigned();
             $table->timestamps();
 			
-			$table->foreing('loan_id')->references('id')->on('loans');
+			$table->foreign('loan_id')->references('id')->on('loans');
         });
     }
 

@@ -16,7 +16,8 @@ class CreatePeriodicPublicationsTable extends Migration
            $table->increments('id');
             $table->string('signature');
             $table->string('ISSN');
-            $table->foreign('editorial_id')->references('id')->on('editoral');
+            $table->integer('editorial_id')->unsigned();
+            $table->foreign('editorial_id')->references('id')->on('editorials');
             $table->timestamps();
         });
     }

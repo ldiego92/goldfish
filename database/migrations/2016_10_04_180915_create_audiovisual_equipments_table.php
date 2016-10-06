@@ -20,10 +20,10 @@ class CreateAudiovisualEquipmentsTable extends Migration
 			$table->integer('loanable_id')->unsigned();
 			$table->timestamps();
 			
-			$table->foreing('brand_id_id')->references('id')->on('brands');
-			$table->foreing('model_id')->references('id')->on('models');
-			$table->foreing('type_id')->references('id')->on('Types');
-			$table->foreing('loanable_id')->references('id')->on('loanables');
+			$table->foreign('brand_id')->references('id')->on('brands');
+			$table->foreign('model_id')->references('id')->on('models');
+			$table->foreign('type_id')->references('id')->on('types');
+			$table->foreign('loanable_id')->references('id')->on('loanables');
         });
     }
 

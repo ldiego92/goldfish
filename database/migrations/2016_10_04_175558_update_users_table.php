@@ -13,7 +13,6 @@ class UpdateUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
             $table->integer('identity_card');
             $table->string('last_name');  
             $table->date('birthdate');
@@ -22,7 +21,7 @@ class UpdateUsersTable extends Migration
             $table->date('next_update_time');
             $table->boolean('active');  
             $table->integer('role_id')->unsigned(); 
-            $table->foreign('role_id')->references('id')->on('role');
+            $table->foreign('role_id')->references('id')->on('roles');
         });
     }
 
@@ -34,7 +33,7 @@ class UpdateUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->dropForeign(['role_id']);
         });
     }
 }

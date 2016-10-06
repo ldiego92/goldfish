@@ -14,11 +14,11 @@ class CreateBooksTable extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->increments('id');
-            $table->int('lonables_id')->unsigned();
-            $table->int('bibliographic_materials_id')->unsigned();
+            $table->integer('loanable_id')->unsigned();
+            $table->integer('bibliographic_materials_id')->unsigned();
 
-            $table->foreign('lonables_id')->reference('id')->on('lonables');
-            $table->foreign('bibliographic_materials_id')->reference('id')->on('bibliographic_materials');
+            $table->foreign('loanable_id')->references('id')->on('loanables');
+            $table->foreign('bibliographic_materials_id')->references('id')->on('bibliographic_materials');
             $table->timestamps();
         });
     }

@@ -15,10 +15,12 @@ class CreateArticlesTable extends Migration
         Schema::create('articles', function (Blueprint $table) {
              $table->increments('id');
             $table->string('title');
-            $table->integer('beagin_page');
+            $table->integer('begin_page');
             $table->integer('end_page');
-            $table->foreign('copy_of_periodic_publication_id')->references('id')->on('copy_of_periodic_publication');
+            $table->integer('copy_periodic_publication_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('copy_periodic_publication_id')->references('id')->on('copy_periodic_publications');
         });
     }
 

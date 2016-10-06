@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLonablesTable extends Migration
+class CreateLoanablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,11 @@ class CreateLonablesTable extends Migration
      */
     public function up()
     {
-        Schema::create('lonables', function (Blueprint $table) {
+        Schema::create('loanables', function (Blueprint $table) {
             $table->increments('id');
-            $table->int('barcode');
+            $table->integer('barcode');
             $table->string('note');
-            $table->int('state_id')->unsigned();
+            $table->integer('state_id')->unsigned();
             $table->timestamps();
 
             $table->foreign('state_id')->references('id')->on('states');
@@ -30,6 +30,6 @@ class CreateLonablesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('lonables');
+        Schema::drop('loanables');
     }
 }

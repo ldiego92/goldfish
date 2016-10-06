@@ -13,12 +13,12 @@ class CreateCartographicMaterialKeyWordsTable extends Migration
     public function up()
     {
         Schema::create('cartographic_material_key_words', function (Blueprint $table) {
-            $table->int('key_word_id')->unsigned();
-            $table->int('cartographic_material_id')->unsigned();
+            $table->integer('key_word_id')->unsigned();
+            $table->integer('cartographic_material_id')->unsigned();
 
-            $table->primary(['key_word_id', 'cartographic_material_id']);
-            $table->foreign('key_word_id')->references('id')->on('key_word');
-            $table->foreign('cartographic_material_id')->references('id')->on('cartographic_materials');
+            $table->primary(['key_word_id', 'cartographic_material_id'], 'kw_cm_pk');
+            $table->foreign('key_word_id','kw_fk')->references('id')->on('key_words');
+            $table->foreign('cartographic_material_id','cm_fk')->references('id')->on('cartographic_materials');
             $table->timestamps();
         });
     }

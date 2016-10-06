@@ -17,12 +17,13 @@ class CreateLoansTable extends Migration
             $table->datetime('departure_time');
             $table->datetime('return_time');
             $table->integer('user_id')->unsigned();
-            $table->foreign('user_ud')->references('id')->on('user');
             $table->integer('authorizing_user_id')->unsigned();
-            $table->foreign('authorizing_user_id')->references('id')->on('user');
-            $table->integer('lonable_id')->unsigned();
-            $table->foreign('lonable_id')->references('id')->on('lonable');
+            $table->integer('loanable_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('authorizing_user_id')->references('id')->on('users');
+            $table->foreign('loanable_id')->references('id')->on('loanables');
         });
     }
 
