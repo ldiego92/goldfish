@@ -17,8 +17,8 @@ class CreateThreeDimensionalObjectKeyWordsTable extends Migration
             $table->int('key_word_id')->unsigned();
 
             $table->primary(['three_dimensional_object_id', 'key_word_id']);
-            $table->foreign('three_dimensional_object_id')->reference('id')->on('three_dimensional_object');
-            $table->foreign('key_word_id')->reference('id')->on('key_word');
+            $table->foreign('three_dimensional_object_id')->reference('id')->on('three_dimensional_objects');
+            $table->foreign('key_word_id')->reference('id')->on('key_words');
             $table->timestamps();
         });
     }

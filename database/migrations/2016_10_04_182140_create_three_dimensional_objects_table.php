@@ -14,7 +14,11 @@ class CreateThreeDimensionalObjectsTable extends Migration
     {
         Schema::create('three_dimensional_objects', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('physical_description');
+            $table->integer('bibliographic_material_id');
             $table->timestamps();
+
+            $table->foreign('bibliographic_material_id')->reference('id')->on('bibliographic_materials');
         });
     }
 

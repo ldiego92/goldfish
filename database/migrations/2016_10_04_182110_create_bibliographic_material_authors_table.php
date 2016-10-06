@@ -13,7 +13,12 @@ class CreateBibliographicMaterialAuthorsTable extends Migration
     public function up()
     {
         Schema::create('bibliographic_material_authors', function (Blueprint $table) {
-            $table->increments('id');
+            $table->int('bibliographic_material_id')->unsigned();
+            $table->int('author_id')->unsigned();
+
+            $table->primary(['bibliographic_material_id', 'author_key']);
+            $table->foreign('bibliographic_material_id')->refence('id')->on('bibliographic_materials');
+            $table->foreign('author_id')->refence('id')->on('authors');
             $table->timestamps();
         });
     }
