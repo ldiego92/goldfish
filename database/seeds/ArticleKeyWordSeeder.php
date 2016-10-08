@@ -12,9 +12,11 @@ class ArticleKeyWordSeeder extends Seeder
      */
     public function run()
     {
+        for ($i=0; $i < 20; $i++) { 
         DB::table('ArticleKeyWord')->insert([
-        	'article_id'=> rand(1,20),
-        	'key_word_id'=> rand(1,20),
+        	'article_id'=> $i+1,
+        	'key_word_id'=> $i+1,
         	]);
+        }
     }
 }
