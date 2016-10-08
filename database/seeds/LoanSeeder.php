@@ -16,9 +16,9 @@ class LoanSeeder extends Seeder
 
         		'departure_time'       =>  '2016-10-'.$i.' 02:20:'.$i + 10,
         		'return_time'          =>  '2016-11-'.$i.' 02:20:'.$i + 10,
-        		'user_id'              =>  $i;
-        		'authorizing_user_id'  =>  $i;
-        		'loanable_id'          =>  $i;
+        		'user_id'              =>  $i+1;
+        		'authorizing_user_id'  =>  $i+1;
+        		'loanable_id'          =>  $i+1;
         		]);
 
         }
