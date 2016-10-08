@@ -15,9 +15,9 @@ class BibliographicMaterialSeeder extends Seeder
         for ($i=0; $i <20; $i++) { 
         	BibliographicMaterial::create([
         		'year' => $i + 2000,
-        		'signature' => "Signatura_".$i,
-        		'publication_place' => 'Costa Rica_'.$i,
-        		'editorial_id' => $i,
+        		'signature' => "Signatura_".$i+1,
+        		'publication_place' => 'Costa Rica_'.$i+1,
+        		'editorial_id' => $i+1,
         		]);
         }
     }
