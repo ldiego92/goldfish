@@ -14,8 +14,8 @@ class CartographicMaterialKeyWordSeeder extends Seeder
     {
       	for($i=0; $i<20;$i++) {
           DB::table('CartographicMaterialKeyWord')->insert([
-            'key_word_id' => $i,
-            'cartographic_material_id' => $i,
+            'key_word_id' => $i + 1,
+            'cartographic_material_id' => $i + 1,
             ]);
         }
     }

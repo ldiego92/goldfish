@@ -16,7 +16,7 @@ class LoanableSeeder extends Seeder
              Loanable::Create([
                 'barcode' => $i,
                 'note' => 'Nota_' . $i,
-                'state_id' => $i,
+                'state_id' => $i + 1,
              	]);
     }
 }

@@ -13,8 +13,8 @@ class BookSeeder extends Seeder
     public function run()
     {
           Book::Create([
-                'loanable_id' => $i,
-                'bibliographic_materials_id' => $i,
+                'loanable_id' => $i + 1,
+                'bibliographic_materials_id' => $i + 1,
              	]);
     }
 }

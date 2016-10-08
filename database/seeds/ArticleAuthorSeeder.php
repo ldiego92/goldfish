@@ -13,8 +13,8 @@ class ArticleAuthorSeeder extends Seeder
     {
     	for($i=0; $i<20;$i++) {
           DB::table('ArticleAuthor')->insert([
-            'article_id' => $i,
-            'author_id' => $i,
+            'article_id' => $i + 1,
+            'author_id' => $i + 1,
             ]);
         }
     }
