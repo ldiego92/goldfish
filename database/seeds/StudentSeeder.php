@@ -15,7 +15,7 @@ class StudentSeeder extends Seeder
         for($i=0; $i<20;$i++) {
              Student::Create([
                 'license' => $i,
-                'user_Id' => $i + 1,
+                'user_id' => $i + 1,
              	]);
         }
     }
