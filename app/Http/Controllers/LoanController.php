@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Hash;
 use Illuminate\Http\Request;
 
+use Gate;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -19,22 +20,36 @@ class LoanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        /*$loanable = new Loanable();
-        $loanable->barcode = 
-        $barcode
-        $loanale = Loanable::where('barcode', $barcode)->get();
-            return $loanale;*/
+        $barcode = $request->barcode;
+        $identification = $request->identification;
+        $departure_time = $request->departure_time;
+        $return_time = $request->return_time;
+
+        $loanable = Loanable::where('barcode', $barcode)->first();
+        if($loanable != null){
+            $loanable->state;
+            return $this->getConcreteLoanalbe($loanable);
+        }
+        return $loanable;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    private function getConcreteLoanalbe($loanable)
     {
+        $concreteTypes = [
+            'audiovisualEquipment',
+            'copyPeriodicPublication',
+            'audiovisualMaterial',
+            'cartographicMaterial',
+            'threeDimensionalObject',
+        ];
+
+        foreach ($concreteTypes as $type) {
+            if($loanable->$type != null){
+                return $loanable->$type; 
+            }
+        }
         
     }
 
@@ -46,16 +61,16 @@ class LoanController extends Controller
      */
     public function store(Request $request)
     {
-        $authorized_user = Auth::user();
-        if(isset($authorized_user)){
-            $barcode = $request->barcode;
-            $identification = $request->identification;
-            $departure_time = $request->departure_time;
-            $return_time = $request->return_time;
+        //$this->authorize('borrower');
 
-            $loanale = Loanable::where('barcode', $barcode)->get();
-            return $loanale;
-        }
+        $barcode = $request->barcode;
+        $identification = $request->identification;
+        $departure_time = $request->departure_time;
+        $return_time = $request->return_time;
+
+        $loanale = Loanable::where('barcode', $barcode)->get();
+        return $loanale;
+        
     }
 
     /**
