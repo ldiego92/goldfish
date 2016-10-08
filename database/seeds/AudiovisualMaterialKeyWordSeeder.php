@@ -13,7 +13,7 @@ class AudiovisualMaterialKeyWordSeeder extends Seeder
     public function run()
     {
         for($i=0;$i < 20; $i++){
-        	DB::table('AudiovisualMaterialKeyWord')->insert([
+        	DB::table('audiovisual_material_key_words')->insert([
             'audiovisual_material_id' => $i+1,
             'key_word_id' => $i+1,
         ]);

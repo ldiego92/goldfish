@@ -18,5 +18,6 @@ class LoanableSeeder extends Seeder
                 'note' => 'Nota_' . $i,
                 'state_id' => $i + 1,
              	]);
+         }
     }
 }

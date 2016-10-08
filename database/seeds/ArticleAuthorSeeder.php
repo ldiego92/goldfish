@@ -12,7 +12,7 @@ class ArticleAuthorSeeder extends Seeder
     public function run()
     {
     	for($i=0; $i<20;$i++) {
-          DB::table('ArticleAuthor')->insert([
+          DB::table('article_authors')->insert([
             'article_id' => $i + 1,
             'author_id' => $i + 1,
             ]);

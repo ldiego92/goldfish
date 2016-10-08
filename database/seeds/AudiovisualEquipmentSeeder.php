@@ -17,6 +17,7 @@ class AudiovisualEquipmentSeeder extends Seeder
 			'brand_id'=>$i+1,
 			'model_id'=>$i+1,
 			'type_id'=>$i+1,
+            'loanable_id'=>$i+1,
 			]);
 		}
     }

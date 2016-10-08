@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Model;
+use App\AudiovisualModel;
 
-class ModelSeeder extends Seeder
+class AudiovisualModelSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,7 +13,7 @@ class ModelSeeder extends Seeder
     public function run()
     {
         for($i=0; $i<20;$i++) {
-			Model::create([
+			AudiovisualModel::create([
 			'name'=>'Name_'.$i,			
 			]);
 		}

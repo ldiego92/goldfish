@@ -26,10 +26,6 @@ class Loanable extends Model
 		return $this->hasOne('App\AudiovisualMaterial');
 	}
 	
-	public function audiovisualEquipment() {
-		return $this->hasOne('App\AudiovisualEquipment');
-	}
-	
 	public function cartographicMaterial() {
 		return $this->hasOne('App\CartographicMaterial');
 	}

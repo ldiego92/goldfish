@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\MoneyPenalty;
 
-class MoneyPelantySeeder extends Seeder
+class MoneyPenaltySeeder extends Seeder
 {
     /**
      * Run the database seeds.

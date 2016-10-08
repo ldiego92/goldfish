@@ -13,7 +13,7 @@ class ArticleSeeder extends Seeder
     public function run()
     {
         for ($i=0; $i < 20; $i++) { 
-        	Articles::create([
+        	Article::create([
 	        	'title' 	               	   =>	'Titulo_'.$i,
 	        	'begin_page'                   =>	rand(1,200),
 	        	'end_page'	                   =>	rand(201,400),

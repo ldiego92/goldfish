@@ -17,7 +17,7 @@ class AudiovisualMaterialSeeder extends Seeder
         		'loanable_id'=> $i+1,
         		'bibliographic_material_id' => $i+1,
         		'audiovisual_format_id' => $i+1,
-        		'audivisual_material_type_id' => $i+1,
+        		'audiovisual_material_type_id' => $i+1,
         		]);
         }
     }
