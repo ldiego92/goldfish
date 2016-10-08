@@ -13,8 +13,8 @@ class BibliographicMaterialAuthorSeeder extends Seeder
     {
         for($i=0; $i<20;$i++) {
 			DB::table('BibliographicMaterialAuthor')->insert([
-			'bibliographic_material_id'=>$i,
-			'author_id'=>$i,
+			'bibliographic_material_id'=>$i+1,
+			'author_id'=>$i+1,
 			
 			]);
 		}
