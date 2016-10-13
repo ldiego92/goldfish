@@ -15,6 +15,18 @@ use App\Role;
 
 class LoanController extends Controller
 {
+    private $available;
+    private $borrowed;
+    private $out_of_service;
+    private $in_repair;
+
+    public function __construct(){
+        $this->available = 1;
+        $this->borrowed = 2;
+        $this->out_of_service = 3;
+        $this->in_repair = 4;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,17 +34,7 @@ class LoanController extends Controller
      */
     public function index(Request $request)
     {
-        $barcode = $request->barcode;
-        $identification = $request->identification;
-        $departure_time = $request->departure_time;
-        $return_time = $request->return_time;
-
-        $loanable = Loanable::where('barcode', $barcode)->first();
-        if($loanable != null){
-            $loanable->state;
-            return $this->getConcreteLoanalbe($loanable);
-        }
-        return $loanable;
+        Loan::all();
     }
 
     private function getConcreteLoanalbe($loanable)
@@ -61,6 +63,7 @@ class LoanController extends Controller
      */
     public function store(Request $request)
     {
+<<<<<<< HEAD
         //$this->authorize('borrower');
 
         $barcode = $request->barcode;
@@ -71,6 +74,20 @@ class LoanController extends Controller
         $loanale = Loanable::where('barcode', $barcode)->get();
         return $loanale;
         
+=======
+        $loan =new Loan();
+
+        $loan->barcode = $request->barcode;
+        $loan->departure_time = $request->departure_time;
+        $loan->user_id = $request->user_id;
+        $loan->return_time = $request->return_time;
+        $loan->authorizing_user = Auth::user();
+        $loan->loanable = $request->loanable_id; 
+
+        $loanable_id = Loanable::where('barcode', $barcode)->first();
+            
+        return $loan;
+>>>>>>> 7c903f47f4ea9cf49cbd415d50bd1515f8ae9c27
     }
 
     /**
@@ -81,7 +98,7 @@ class LoanController extends Controller
      */
     public function show($id)
     {
-        //
+        return Loan::find($id);
     }
 
     /**
@@ -116,5 +133,22 @@ class LoanController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function returnLoan(Request $request)
+    {
+        $barcode = $request->barcode;
+        
+        $loanable = Loanable::where('barcode', $barcode)->first();
+
+        $loan = Loan::where('loanable_id', $loanable->id)->orderBy('created_at', 'desc')->first();
+        
+        if($loanable->state_id == $this->borrowed && $loan->user_return_time == "0000-00-00 00:00:00"){
+            $loanable->state_id = $this->available;
+            $loan->user_return_time = date('Y-m-d H:i:s');
+            $loanable->save();
+            $loan->save();
+        }
+        return $loan;
     }
 }

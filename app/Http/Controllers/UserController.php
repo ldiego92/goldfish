@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Role;
+use App\Student;
 use Auth;
 
 class UserController extends Controller
@@ -112,5 +113,19 @@ class UserController extends Controller
     public function destroy($id)
     {
         
+    }
+    public function searchByIdentification(Request $request){
+
+        $student = Student::where('license', $request->identification)->first();
+         if(isset($student)){
+            $user = User::find($student->user_id);
+            $user->student;
+         } else {
+            $user = User::where('identity_card', $request->identification)->first();
+         }
+         if(isset($user)){
+            return $user;
+         }
+         return null;
     }
 }
