@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\AudiovisualModel;
 
 class AudiovisualModelController extends Controller
 {
@@ -16,7 +17,7 @@ class AudiovisualModelController extends Controller
      */
     public function index()
     {
-        //
+       return AudiovisualModel::all(); 
     }
 
     /**
@@ -37,8 +38,10 @@ class AudiovisualModelController extends Controller
      */
     public function store(Request $request)
     {
-        $name = $request->name;
-		return true;
+		$model = new AudiovisualModel();
+        $model->name = $request->name;
+		$model->save();
+		return $model;
     }
 
     /**
@@ -49,7 +52,7 @@ class AudiovisualModelController extends Controller
      */
     public function show($id)
     {
-        //
+        return AudiovisualModel::find($id);
     }
 
     /**
@@ -60,7 +63,7 @@ class AudiovisualModelController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
@@ -72,8 +75,10 @@ class AudiovisualModelController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $name = $request->name;
-		return true;
+		$model = AudiovisualModel::find($id);
+        $model->name = $request->name;
+		$model->save();
+		return $model;
     }
 
     /**
@@ -84,6 +89,10 @@ class AudiovisualModelController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $del = AudiovisualModel::destroy($id);
+		if($del ==true) {
+			return 1;
+		}
+		return 0;
     }
 }
