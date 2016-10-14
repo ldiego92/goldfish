@@ -17,12 +17,5 @@ Route::get('/', function () {
 
 Route::resource('loan','LoanController');
 Route::resource('users','UserController');
-Route::resource('audiovisual-equipment', 'AudiovisualEquipmentController');
-Route::resource('brand','BrandController');
-Route::resource('model','AudiovisualModelController');
-Route::resource('type','TypeController');
 Route::get('login','UserController@login');
 Route::get('logout','UserController@logout');
-//Route::get('test-ae','AudiovisualEquipmentController@testAE');
-//Route::get('test-update/{id}','AudiovisualEquipmentController@testUpdate');
-//Route::get('test-del/{id}','AudiovisualEquipmentController@testDel');

@@ -17,7 +17,7 @@ class BrandController extends Controller
      */
     public function index()
     {
-       return Brand::all();
+        Brand::all();
     }
 
     /**
@@ -38,10 +38,8 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
-		$brand = new Brand();
-        $brand->name = $request->name;
-		$brand->save();
-		return $brand;
+            $name = $request->name;
+		return true;
 
     }
 
@@ -53,7 +51,7 @@ class BrandController extends Controller
      */
     public function show($id)
     {
-       return Brand::find($id);
+        //
     }
 
     /**
@@ -76,10 +74,8 @@ class BrandController extends Controller
      */
     public function update(Request $request, $id)
     {
-		$brand = Brand::find($id);
-        $brand->name = $request->name;
-		$brand->save();
-		return $brand;
+        $name = $request->name;
+		return true;
     }
 
     /**
@@ -90,10 +86,6 @@ class BrandController extends Controller
      */
     public function destroy($id)
     {
-        $del = Brand::destroty($id);
-		if($del == true) {
-		return 1;
-		}
-		return 0;
+        //
     }
 }
