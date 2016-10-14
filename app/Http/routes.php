@@ -22,3 +22,7 @@ Route::get('logout','UserController@logout');
 Route::get('loan', 'LoanController@store');
 Route::post('search-by-identification','UserController@searchByIdentification');
 Route::get('search-by-identification','UserController@searchByIdentification');
+Route::resource('audiovisual-equipment', 'AudiovisualEquipmentController');
+Route::resource('brand','BrandController');
+Route::resource('model','AudiovisualModelController');
+Route::resource('type','TypeController');
