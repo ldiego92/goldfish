@@ -15,7 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('loan','LoanController');
+//Route::resource('loan','LoanController');
 Route::resource('users','UserController');
 Route::get('login','UserController@login');
 Route::get('logout','UserController@logout');
+Route::get('loan', 'LoanController@store');
+Route::post('search-by-identification','UserController@searchByIdentification');
+Route::get('search-by-identification','UserController@searchByIdentification');
