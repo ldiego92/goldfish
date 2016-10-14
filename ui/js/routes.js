@@ -43,7 +43,7 @@ const app = new Vue({
   		this.searchUser.state = 'warning';
   		this.searchUser.disabled = true; 
   		var xhr = $.ajax({
-		  	method: "GET",
+		  	method: "POST",
 		  	url: wss + "search-by-identification",
 		  	data: { 
 		  		identification: this.identification
