@@ -10,6 +10,7 @@ use App\ThreeDimensionalObject;
 use App\ThreeDimensionalObjectKeyWord;
 use App\BibliographicMaterial;
 use App\Loanable;
+use App\LoanCategory;
 
 class ThreeDimensionalObjectController extends Controller
 {
@@ -45,10 +46,19 @@ class ThreeDimensionalObjectController extends Controller
         $loanable = new Loanable();
         $threeDimensionalObject = new ThreeDimensionalObjectController();
         $threeDimensionalObjectKeyWord =  new ThreeDimensionalObjectKeyWord();
+        $loanCategory = new LoanCategory();
+        
+        $loanCategory->limit_time = $request->limit_time;
+        $loanCategory->name = $request->name;
+        $loanCategory->max_hours = $request->max_hours;
+        $loanCategory->save();
+
+
         
         $loanable->barcode = $request->barcode;
         $loanable->note = $request->note;
         $loanable->state_id = $request->state_id;
+        $loanable->loan_category_id = $loan_category_id->id;
         $loanable->save();
         
         $loanableId = Loanable::where('barcode', $request->barcode)->first->id;
@@ -70,6 +80,8 @@ class ThreeDimensionalObjectController extends Controller
         
         return $threeDimensionalObject;
     }
+    
+    
 
     /**
      * Display the specified resource.
@@ -105,11 +117,17 @@ class ThreeDimensionalObjectController extends Controller
         $threeDimensionalObject = ThreeDimensionalObject::find($id);
         $bibliographicMaterial = BibliographicMaterial::find($threeDimensionalObject->bibliographic_materials_id);
         $loanable = Loanable::find($threeDimensionalObject->loanable_id);       
+         $loanCategory = new LoanCategory();
         
+        $loanCategory->limit_time = $request->limit_time;
+        $loanCategory->name = $request->name;
+        $loanCategory->max_hours = $request->max_hours;
+        $loanCategory->save();
         
         $loanable->barcode = $request->barcode;
         $loanable->note = $request->note;
         $loanable->state_id = $request->state_id;
+        $loanable->loan_category_id = $loan_category_id->id;
         $loanable->save();
         
         $loanableId = Loanable::where('barcode', $request->barcode)->first->id;
@@ -121,6 +139,8 @@ class ThreeDimensionalObjectController extends Controller
         $bibliographicMaterial->editorial_id = $request->editorial_id;
         $bibliographicMaterial->loanable_id = $loanableId;        
         $bibliographicMaterial->save();
+        
+        
         
         $threeDimensionalObject->bibliographic_material_id = $bibliographicMaterial->id;
         $threeDimensionalObject->physical_description = $request->physical_description;
@@ -142,11 +162,15 @@ class ThreeDimensionalObjectController extends Controller
         $id_loanable = $threeDimensionalObject->loanable_id;
         
         
-        ThreeDimensionalObject::destroy($id);
-        BibliographicMaterial::destroy($id_bibliographicMaterial);
-        Loanable::destroy($id_loanable);        
+           
         DB::table('three_dimensional_object_key_words')->where('three_dimensional_object_id', $ThreeDimensionalObject->id)->delete();
         
-        return 1;
+        $del1 = ThreeDimensionalObject::destroy($id);
+        $del2 = BibliographicMaterial::destroy($id_bibliographicMaterial);
+        $del3 = Loanable::destroy($id_loanable);
+		if($del1==true && $del2==true && $del3==true) {
+		return 1;
+		}
+		return 0;
     }
 }

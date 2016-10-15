@@ -28,3 +28,4 @@ Route::resource('model','AudiovisualModelController');
 Route::resource('type','TypeController');
 Route::resource('cartographic-material','CartographicMaterialController');
 Route::resource('three-dimensional-object','ThreeDimensionalObjectController');
+

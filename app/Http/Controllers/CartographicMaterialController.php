@@ -10,6 +10,7 @@ use App\CartographicMaterial;
 use App\BibliographicMaterial;
 use App\Loanable;
 use App\CartographicMaterialKeyWord;
+use App\LoanCategory;
 
 class CartographicMaterialController extends Controller
 {
@@ -45,10 +46,17 @@ class CartographicMaterialController extends Controller
         $loanable = new Loanable();
         $cartographicMaterial = new CartographicMaterial();
         $cartographicMaterialKeyWord =  new CartographicMaterialKeyWord;
+        $loanCategory = new LoanCategory();
+        
+        $loanCategory->limit_time = $request->limit_time;
+        $loanCategory->name = $request->name;
+        $loanCategory->max_hours = $request->max_hours;
+        $loanCategory->save();
         
         $loanable->barcode = $request->barcode;
         $loanable->note = $request->note;
         $loanable->state_id = $request->state_id;
+        $loanable->loan_category_id = $loan_category_id->id;
         $loanable->save();
         
         $loanableId = Loanable::where('barcode', $request->barcode)->first->id;
@@ -106,11 +114,17 @@ class CartographicMaterialController extends Controller
         $cartographicMaterial = CartographicMaterial::find($id);
         $bibliographicMaterial = BibliographicMaterial::find($cartographicMaterial->bibliographic_materials_id);
         $loanable = Loanable::find($cartographicMaterial->loanable_id);       
+        $loanCategory = new LoanCategory();
         
+        $loanCategory->limit_time = $request->limit_time;
+        $loanCategory->name = $request->name;
+        $loanCategory->max_hours = $request->max_hours;
+        $loanCategory->save();
         
         $loanable->barcode = $request->barcode;
         $loanable->note = $request->note;
         $loanable->state_id = $request->state_id;
+        $loanable->loan_category_id = $loan_category_id->id;
         $loanable->save();
         
         $loanableId = Loanable::where('barcode', $request->barcode)->first->id;
@@ -143,11 +157,15 @@ class CartographicMaterialController extends Controller
         $id_loanable = $cartographicMaterial->loanable_id;
         
         
-        CartographicMaterial::destroy($id);
-        BibliographicMaterial::destroy($id_bibliographicMaterial);
-        Loanable::destroy($id_loanable);        
+               
         DB::table('cartographic_material_key_words')->where('cartographic_material_id', $cartographicMaterial->id)->delete();
         
-        return 1;
+        $del1 = CartographicMaterial::destroy($id);
+        $del2 = BibliographicMaterial::destroy($id_bibliographicMaterial);
+        $del3 = Loanable::destroy($id_loanable);
+		if($del1==true && $del2==true && $del3==true) {
+		return 1;
+		}
+		return 0;
     }
 }
