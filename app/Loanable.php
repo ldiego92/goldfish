@@ -14,6 +14,10 @@ class Loanable extends Model
 		return $this->hasMany('App\Loan');
 	}
 	
+	public function loanCategory() {
+		return $this->belongsTo('App\LoanCategory');
+	}
+	
 	public function audiovisualEquipment() {
 		return $this->hasOne('App\AudiovisualEquipment');
 	}
