@@ -15,11 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Route::resource('loan','LoanController');
+Route::resource('loan','LoanController');
 Route::resource('users','UserController');
 Route::get('login','UserController@login');
 Route::get('logout','UserController@logout');
-Route::get('loan', 'LoanController@store');
+Route::get('loan-test', 'LoanController@store');
 Route::post('search-by-identification','UserController@searchByIdentification');
 Route::get('search-by-identification','UserController@searchByIdentification');
 Route::resource('audiovisual-equipment', 'AudiovisualEquipmentController');
@@ -31,3 +31,4 @@ Route::resource('three-dimensional-object','ThreeDimensionalObjectController');
 
 
 Route::get('loan-by-id','LoanController@returnLoanById');
+Route::get('gets', "LoanController@gets");

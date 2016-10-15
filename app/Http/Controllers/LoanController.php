@@ -83,6 +83,11 @@ class LoanController extends Controller
 		}    
         return null;
     }
+
+    public function gets()
+    {
+        return Auth::user();
+    }
 	
 
     /**
@@ -152,8 +157,11 @@ class LoanController extends Controller
         $user = User::find($request->id);
 
         if(isset($user)){
-        $loanById = Loan::where('user_id' ,'=', $user->id)->where('user_return_time' ,'=', '0000-00-00 00:00:00')->get();
-    }
+            $loanById = Loan::where('user_id' ,'=', $user->id)->where('user_return_time' ,'=', '0000-00-00 00:00:00')->get();
+            foreach ($loanById as $loan) {
+                $loan->loanable;
+            }
+        }
         return $loanById;
     } 
 }
