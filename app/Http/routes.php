@@ -33,3 +33,8 @@ Route::get('gets', "LoanController@gets");
 
 
 
+<<<<<<< HEAD
+=======
+Route::get('loan-by-id','LoanController@returnLoanById');
+Route::get('gets', "LoanController@gets");
+>>>>>>> 97893cb6f4823268e1d296b0753980f32ec7cf57

@@ -12,6 +12,7 @@ use App\Loanable;
 use App\Loan;
 use App\Penalty;
 use App\Role;
+use Auth;
 
 class LoanController extends Controller
 {
@@ -21,6 +22,7 @@ class LoanController extends Controller
     private $in_repair;
 
     public function __construct(){
+        $this->middleware('cros', ['except' => ['create', 'edit']]);
         $this->available = 1;
         $this->borrowed = 2;
         $this->out_of_service = 3;
@@ -70,15 +72,21 @@ class LoanController extends Controller
         $loan->departure_time = $request->departure_time;
         $loan->user_id = $request->user_id;
         $loan->return_time = $request->return_time;
-        $loan->authorizing_user = Auth::user();
+        $loan->authorizing_user_id = Auth::user()->id;
         $loan->loanable_id = $loanable->id; 
 		
 		if($loanable->state_id == 1){
 			$loanable->state_id = 2;
+			$loanable->save();
 			$loan->save();
 			return $loan;
 		}    
         return null;
+    }
+
+    public function gets()
+    {
+        return Auth::user();
     }
 	
 
@@ -149,8 +157,11 @@ class LoanController extends Controller
         $user = User::find($request->id);
 
         if(isset($user)){
-        $loanById = Loan::where('user_id' ,'=', $user->id)->where('user_return_time' ,'=', '0000-00-00 00:00:00')->get();
-    }
+            $loanById = Loan::where('user_id' ,'=', $user->id)->where('user_return_time' ,'=', '0000-00-00 00:00:00')->get();
+            foreach ($loanById as $loan) {
+                $loan->loanable;
+            }
+        }
         return $loanById;
     } 
 }

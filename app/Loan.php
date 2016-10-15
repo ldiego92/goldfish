@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Loan extends Model
 {
         public function loanable() {
-		return $this->belongsTo('App\Loanable');
+			return $this->belongsTo('App\Loanable');
 		}
 		
 		public function penalty() {
