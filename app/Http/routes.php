@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return csrf_token();
 });
 
 Route::resource('loan','LoanController');
@@ -33,3 +33,5 @@ Route::resource('book','BookController');
 Route::get('loan-by-id','LoanController@returnLoanById');
 Route::get('gets', "LoanController@gets");
 
+
+Route::post('return-loan', 'LoanController@returnLoan');

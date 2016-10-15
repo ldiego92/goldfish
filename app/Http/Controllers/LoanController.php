@@ -72,13 +72,14 @@ class LoanController extends Controller
         $loan->departure_time = $request->departure_time;
         $loan->user_id = $request->user_id;
         $loan->return_time = $request->return_time;
-        $loan->authorizing_user_id = Auth::user()->id;
+        $loan->authorizing_user_id = 1;//Auth::user()->id;
         $loan->loanable_id = $loanable->id; 
 		
 		if($loanable->state_id == 1){
 			$loanable->state_id = 2;
 			$loanable->save();
 			$loan->save();
+            $loan->loanable;
 			return $loan;
 		}    
         return null;
@@ -86,7 +87,7 @@ class LoanController extends Controller
 
     public function gets()
     {
-        return Auth::user();
+        return  response()->json(['a' => Auth::user()])->setCallback($request->input('callback'));//Auth::user());
     }
 	
 

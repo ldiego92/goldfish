@@ -27,7 +27,7 @@ const app = new Vue({
   		disabled: false,
   	},
   	user:{},
-  	currentLoans:{},
+  	currentLoans:[],
   	modal:{
   		title:'',
   		message:'',
@@ -37,7 +37,7 @@ const app = new Vue({
   },
   methods:{
   	createLoan: function() {
-  		createLoan();
+  		createLoan(this);
   	},
   	clearUser: function () {
   		this.user = {};	
@@ -50,6 +50,7 @@ const app = new Vue({
   		this.searchUser.disabled = true; 
   		var xhr = $.ajax({
 		  	method: "POST",
+        	dataType: 'json',
 		  	url: wss + "search-by-identification",
 		  	data: { 
 		  		identification: this.identification
@@ -109,6 +110,7 @@ function onEnter(element) {
 function getCurrentLoans(id) {
 	var xhr = $.ajax({
 	  	method: "GET",
+        dataType: 'json',
 	  	url: wss + "loan-by-id",
 	  	data: { 
 	  		id: id
@@ -119,6 +121,7 @@ function getCurrentLoans(id) {
     	if(msg != null && msg != ''){
 	    	app.currentLoans = msg;
 	    }else{
+	    	console.log("the  loans are empty");
 	    }
 	});
 	xhr.fail(function (msg) {
@@ -132,9 +135,10 @@ function getCurrentLoans(id) {
 	});
 }
 
-function createLoan() {
+function createLoan(app) {
 	var xhr = $.ajax({
 	  	method: "POST",
+        dataType: 'json',
 	  	url: wss + "loan",
 	  	data: { 
 	  		user_id: app.user.id,
@@ -144,25 +148,29 @@ function createLoan() {
 	  	}
 	});
 	xhr.done(function( msg ) {
-	    console.log(msg);
-    	
+	    console.log('msg',msg,'msg.loanable',msg.loanable);
+    	app.currentLoans.push(msg);
+    	app.barcode = '';
+    	$( "#barcode" ).focus();
 	});
 	xhr.fail(function (msg) {
 	   
 	    message("Existe un error de comunicación con el servidor, por favor reintente la ultima acción. Si el problema persiste solicite soporte técnico", "¡Ha ocurrido un inconveniente!");
 	});
-	xhr.always(function (msg) {
+	xhr.always(function (msg, asd) {
 		//app.searchUser.disabled = false;
+		console.log('Always msg = ', msg, " asd = ", asd)
 	});
 }
 
-function login() {
+function login(email, password) {
 	var xhr = $.ajax({
 	  	method: "GET",
+        dataType: 'json',
 	  	url: wss + "login",
 	  	data: { 
-	  		email: 'diegojopiedra@gmail.com',
-	  		password: "1234"
+	  		email: email,//'diegojopiedra@gmail.com',
+	  		password: password// "1234"
 	  	}
 	});
 	xhr.done(function( msg ) {
@@ -177,18 +185,58 @@ function login() {
 }
 
 function gets() {
+	function myFunction(data) {
+		console.log("callback data= ", data);
+	}
 	var xhr = $.ajax({
 	  	method: "GET",
+        dataType: 'json',
 	  	url: wss + "gets",
-	  	data: {}
+	  	data: {},
+	  	crossDomain: true,
+    	contentType: 'application/json; charset=utf-8',
+    	success: function (msg) {
+    		console.log("Success = ", msg)
+    	},
+    	error: function (msg, error, desc) {
+    		console.log("Error = ", msg, " error = ", error, " desc = ", desc)
+    	}
+	});
+	/*xhr.done(function( msg ) {
+	    console.log("OK = ", msg);
+    	
+	});
+	xhr.fail(function (msg,a,b) {
+	   console.log("Fail = ", msg, a, ' - ', b);
+	    message("Existe un error de comunicación con el servidor, por favor reintente la ultima acción. Si el problema persiste solicite soporte técnico", "¡Ha ocurrido un inconveniente!");
+	});*/
+
+}
+
+function returnLaon(barcode) {
+	var xhr = $.ajax({
+	  	method: "POST",
+        dataType: 'json',
+	  	url: wss + "return-loan",
+	  	data: { 
+	  		barcode: barcode 
+	  	}
 	});
 	xhr.done(function( msg ) {
-	    console.log(msg);
-    	
+	    console.log('return-loan',msg);
+	   	for (var i = 0; i < app.currentLoans.length; i++) {
+	   		var item = app.currentLoans[i];
+	   		if(item.id == msg.id){
+	   			app.currentLoans.splice(i, 1);
+	   		}
+	   	}
 	});
 	xhr.fail(function (msg) {
 	   
 	    message("Existe un error de comunicación con el servidor, por favor reintente la ultima acción. Si el problema persiste solicite soporte técnico", "¡Ha ocurrido un inconveniente!");
 	});
-
+	xhr.always(function (msg, asd) {
+		//app.searchUser.disabled = false;
+		console.log('Always msg = ', msg, " asd = ", asd)
+	});
 }
