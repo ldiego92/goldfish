@@ -47,6 +47,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ThreeDimensionalObjectsSeeder::class);
         $this->call(ThreeDimensionalObjectKeyWordSeeder::class);
         $this->call(CartographicMaterialKeyWordSeeder::class);
+        $this->call(LoanCategorySeeder::class);
 
         Model::reguard();
     }
