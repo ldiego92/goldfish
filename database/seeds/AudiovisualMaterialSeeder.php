@@ -12,12 +12,12 @@ class AudiovisualMaterialSeeder extends Seeder
      */
     public function run()
     {
-        for ($i=0; $i < 20 ; $i++) { 
+        for ($i=16; $i <= 20 ; $i++) { 
         	AudiovisualMaterial::create([
-        		'loanable_id'=> $i+1,
-        		'bibliographic_material_id' => $i+1,
-        		'audiovisual_format_id' => $i+1,
-        		'audiovisual_material_type_id' => $i+1,
+        		
+        		'bibliographic_material_id' => $i,
+        		'audiovisual_format_id' => $i,
+        		'audiovisual_material_type_id' => $i,
         		]);
         }
     }
