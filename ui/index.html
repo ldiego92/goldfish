@@ -29,7 +29,7 @@
 				</div><!-- /.modal-content -->
 			</div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-		<nav class="navbar navbar-dark">
+		<nav class="navbar navbar-default">
 			<div class="container-fluid">
 				<!-- Brand and toggle get grouped for better mobile display -->
 				<div class="navbar-header">
@@ -94,10 +94,10 @@
  	 						<i class="fa fa-search" aria-hidden="true"></i>
  	 					</span>
  	 					<span class="input-group-addon" v-if="searchUser.state == 'success'">
- 	 						<i class="fa fa-check text-success" aria-hidden="true"></i>
+ 	 						<i class="fa fa-check" aria-hidden="true"></i>
  	 					</span>
  	 					<span class="input-group-addon" v-if="searchUser.state == 'warning'">
- 	 						<i class="fa fa-circle-o-notch fa-spin text-primary" aria-hidden="true" ></i>
+ 	 						<i class="fa fa-circle-o-notch fa-spin" aria-hidden="true" ></i>
  	 					</span>
  	 					<span class="input-group-addon" v-if="searchUser.state == 'error'">
  	 						<i class="fa fa-times text-danger" aria-hidden="true" ></i>
@@ -148,7 +148,12 @@
 						<input type="text" class="form-control" placeholder="Fecha de devolución" aria-describedby="date" :disabled="auto=='true'">
 					</div>
 					<div class="col-xs-12 col-sm-3">
-						<input type="text" class="form-control" placeholder="Hora de devolución" aria-describedby="time" :disabled="auto=='true'">
+						<select class="form-control" placeholder="Hora de devolución" aria-describedby="time" :disabled="auto=='true'">
+							<optgroup v-for="n in 12">
+								<option>{{n}}:00</option>
+								<option>{{n}}:30</option>
+							</optgroup>								   	
+						</select>
 					</div>
 					<div class="col-xs-12 col-sm-3">
 						<input type="text" class="form-control" id="barcode" placeholder="Código de barras" aria-describedby="barcode" style="text-transform:uppercase">
