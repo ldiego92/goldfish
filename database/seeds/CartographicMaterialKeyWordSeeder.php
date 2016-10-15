@@ -12,7 +12,7 @@ class CartographicMaterialKeyWordSeeder extends Seeder
      */
     public function run()
     {
-      	for($i=0; $i<20;$i++) {
+      	for($i=0; $i<5;$i++) {
           DB::table('cartographic_material_key_words')->insert([
             'key_word_id' => $i + 1,
             'cartographic_material_id' => $i + 1,

@@ -12,10 +12,9 @@ class BookSeeder extends Seeder
      */
     public function run()
     {
-        for($i=0; $i<20;$i++) {
+        for($i=6; $i<=10;$i++) {
           Book::Create([
-                'loanable_id' => $i + 1,
-                'bibliographic_materials_id' => $i + 1,
+                'bibliographic_materials_id' => $i,
              	]);
         }
     }

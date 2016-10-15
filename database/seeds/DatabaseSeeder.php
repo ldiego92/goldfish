@@ -14,9 +14,9 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        //$this->call(RoleSeeder::class);
-        //$this->call(UserSeeder::class);
-        //$this->call(StudentSeeder::class);
+        $this->call(RoleSeeder::class);
+        $this->call(UserSeeder::class);
+        $this->call(StudentSeeder::class);
         $this->call(BrandSeeder::class);
         $this->call(AudiovisualModelSeeder::class);
         $this->call(TypeSeeder::class);
@@ -47,6 +47,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ThreeDimensionalObjectsSeeder::class);
         $this->call(ThreeDimensionalObjectKeyWordSeeder::class);
         $this->call(CartographicMaterialKeyWordSeeder::class);
+        $this->call(LoanCategorySeeder::class);
 
         Model::reguard();
     }
