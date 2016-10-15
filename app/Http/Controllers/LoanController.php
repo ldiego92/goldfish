@@ -12,6 +12,7 @@ use App\Loanable;
 use App\Loan;
 use App\Penalty;
 use App\Role;
+use Auth;
 
 class LoanController extends Controller
 {
@@ -70,11 +71,12 @@ class LoanController extends Controller
         $loan->departure_time = $request->departure_time;
         $loan->user_id = $request->user_id;
         $loan->return_time = $request->return_time;
-        $loan->authorizing_user = Auth::user();
+        $loan->authorizing_user_id = Auth::user()->id;
         $loan->loanable_id = $loanable->id; 
 		
 		if($loanable->state_id == 1){
 			$loanable->state_id = 2;
+			$loanable->save();
 			$loan->save();
 			return $loan;
 		}    
