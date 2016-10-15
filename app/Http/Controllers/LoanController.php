@@ -87,7 +87,7 @@ class LoanController extends Controller
 
     public function gets()
     {
-        return response()->json(Auth::user());
+        return  response()->json(['a' => Auth::user()])->setCallback($request->input('callback'));//Auth::user());
     }
 	
 

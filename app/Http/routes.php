@@ -36,3 +36,5 @@ Route::resource('book','BookController');
 
 Route::get('loan-by-id','LoanController@returnLoanById');
 Route::get('gets', "LoanController@gets");
+
+Route::post('return-loan', 'LoanController@returnLoan');
