@@ -63,18 +63,6 @@ class LoanController extends Controller
      */
     public function store(Request $request)
     {
-<<<<<<< HEAD
-        //$this->authorize('borrower');
-
-        $barcode = $request->barcode;
-        $identification = $request->identification;
-        $departure_time = $request->departure_time;
-        $return_time = $request->return_time;
-
-        $loanale = Loanable::where('barcode', $barcode)->get();
-        return $loanale;
-        
-=======
         $loan =new Loan();
 
         $loan->barcode = $request->barcode;
@@ -87,7 +75,6 @@ class LoanController extends Controller
         $loanable_id = Loanable::where('barcode', $barcode)->first();
             
         return $loan;
->>>>>>> 7c903f47f4ea9cf49cbd415d50bd1515f8ae9c27
     }
 
     /**
@@ -151,4 +138,14 @@ class LoanController extends Controller
         }
         return $loan;
     }
+
+    public function returnLoanById(Request $request){
+
+        $user = User::find($request->id);
+
+        if(isset($user)){
+        $loanById = Loan::where('user_id' ,'=', $user->id)->where('user_return_time' ,'=', '0000-00-00 00:00:00')->get();
+    }
+        return $loanById;
+    } 
 }
