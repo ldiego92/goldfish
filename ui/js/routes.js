@@ -46,45 +46,88 @@ const app = new Vue({
   		this.currentLoans = [];
   	},
   	getUserData: function () {
-  		this.searchUser.state = 'warning';
-  		this.searchUser.disabled = true; 
-  		var xhr = $.ajax({
-		  	method: "POST",
-        	dataType: 'json',
-		  	url: wss + "search-by-identification",
-		  	data: { 
-		  		identification: this.identification
-		  	}
-		});
-		xhr.done(function( msg ) {
-		    console.log(msg);
-	    	if(msg != null && msg != ''){
-		    	app.user = msg;
-				app.searchUser.state = 'success';
-		    	$( "#barcode" ).focus();
-		    	getCurrentLoans(app.user.id);
-		    }else{
-		    	app.user = {};
-  				app.currentLoans = [];
-		    	app.searchUser.state = 'error';
-		    	$("#identification").focus();
-		    }
-		});
-		xhr.fail(function (msg) {
-		    app.user = {};
-			app.searchUser.state = 'error';
-		    $("#identification").focus();
-		    message("Existe un error de comunicación con el servidor, por favor reintente la ultima acción. Si el problema persiste solicite soporte técnico", "¡Ha ocurrido un inconveniente!");
-		});
-		xhr.always(function (msg) {
-  			app.searchUser.disabled = false;
-		});
+  		getUserData();
   	}
   }
 }).$mount('#app');
 $(document).ready(function () {
 	$("#identification").focus();
+
+	$('#datePicker').datepicker({
+	    language: "es",
+	    todayHighlight: true,
+	    startDate: "today",
+	});
 });
+
+function getUserData() {
+	app.searchUser.state = 'warning';
+	app.searchUser.disabled = true; 
+	var xhr = $.ajax({
+		method: "POST",
+		dataType: 'json',
+		url: wss + "search-by-identification",
+		data: { 
+			identification: app.identification
+		}
+	});
+	xhr.done(function( msg ) {
+		console.log(msg);
+		if(msg != null && msg != ''){
+			app.user = msg;
+			app.searchUser.state = 'success';
+			$( "#barcode" ).focus();
+			getCurrentLoans(app.user.id);
+		}else{
+			app.user = {};
+			app.currentLoans = [];
+			app.searchUser.state = 'error';
+			$("#identification").focus();
+		}
+	});
+	xhr.fail(function (msg) {
+		app.user = {};
+		app.searchUser.state = 'error';
+		$("#identification").focus();
+		message("Existe un error de comunicación con el servidor, por favor reintente la ultima acción. Si el problema persiste solicite soporte técnico", "¡Ha ocurrido un inconveniente!");
+	});
+	xhr.always(function (msg) {
+		app.searchUser.disabled = false;
+	});
+}
+
+function getUserDataById(id) {
+	app.searchUser.state = 'warning';
+	app.searchUser.disabled = true; 
+	var xhr = $.ajax({
+		method: "GET",
+		dataType: 'json',
+		url: wss + "users/"+id,
+		data: {}
+	});
+	xhr.done(function( msg ) {
+		console.log(msg);
+		if(msg != null && msg != ''){
+			app.user = msg;
+			app.searchUser.state = 'success';
+			app.identification = msg.identity_card;
+			getCurrentLoans(app.user.id);
+		}else{
+			app.user = {};
+			app.currentLoans = [];
+			app.searchUser.state = 'error';
+		}
+	});
+	xhr.fail(function (msg) {
+		app.user = {};
+		app.searchUser.state = 'error';
+		$("#identification").focus();
+		message("Existe un error de comunicación con el servidor, por favor reintente la ultima acción. Si el problema persiste solicite soporte técnico", "¡Ha ocurrido un inconveniente!");
+	});
+	xhr.always(function (msg) {
+		app.searchUser.disabled = false;
+	});
+}
 
 function closeModal() {
 	$('#modal').modal('hide');
@@ -228,7 +271,12 @@ function returnLaon(barcode) {
 	   		var item = app.currentLoans[i];
 	   		if(item.id == msg.id){
 	   			app.currentLoans.splice(i, 1);
+	   			ready = true;
 	   		}
+	   	}
+
+	   	if(app.user.id == null){
+	   		getUserDataById(msg.user_id);
 	   	}
 	});
 	xhr.fail(function (msg) {

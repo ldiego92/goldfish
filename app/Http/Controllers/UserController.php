@@ -75,15 +75,16 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = Auth::user();
-        if($user->id == $id || $user->role_id == 1){
+        /*$user = Auth::user();
+        if($user->id == $id || $user->role_id == 1){*/
 
             $userFind = User::find($id);
             $userFind->role;
+            $userFind->student;
             return $userFind;
             
-        }
-        return null;
+        /*}
+        return null;*/
     }
 
     /**
