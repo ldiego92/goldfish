@@ -65,7 +65,7 @@ class AudiovisualEquipmentController extends Controller
      */
     public function show($id)
     {
-        return  AudiovisualEquipment::find($id);
+		return  AudiovisualEquipment::find($id);
     }
 
     /**
