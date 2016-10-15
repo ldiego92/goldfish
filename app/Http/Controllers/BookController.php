@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Book;
 use App\BibliographicMaterial;
 use App\Loanable;
+use APP\LoanCategory;
 
 class BookController extends Controller
 {
@@ -43,19 +44,26 @@ class BookController extends Controller
         $book = new Book();
         $bibliographicMateial = new BibliographicMaterial();
         $loanable = new Loanable();
+        $loan_Category = new LoanCategory();
         
+        $loan_Category->limit_time = $request->limit_time;
+        $loan_Category->name = $request->name;
+        $loan_Category->max_hours = $request->max_hours;
+        $loan_Category->save();
+
         $loanable->barcode = $request->barcode;
         $loanable->note = $request->note;
         $loanable->state_id = $request->state_id;
+        $loanable->loan_category_id = $loan_category->id;
         $loanable->save();
 
         $bibliographicMateial->year = $request->year;
         $bibliographicMateial->signature = $request->signature;
         $bibliographicMateial->publication_place = $request->publication_place;
         $bibliographicMateial->editorial_id = $request->editorial_id;
+        $bibliographicMateial->loanable_id = $loanable->id;
         $bibliographicMateial->save(); 
 
-        $book->loanable_id = $loanable->id;
         $book->bibliographic_materials_id = $bibliographicMateial->id;
         $book->save();
         return $book;
@@ -122,22 +130,28 @@ class BookController extends Controller
     {
         $book = Book::find($id);
         $bibliographicMateial = BibliographicMaterial::find($book->bibliographic_materials_id);
-        $lonable = Loanable::find($book->loanable_id);
-        
+        $loanables = BibliographicMaterial::find($bibliographicMateial->loanable_id);
+        $loan_Category = Loanable::find($loanable->loan_category_id);
+
+
+        $loan_Category->limit_time = $request->limit_time;
+        $loan_Category->name = $request->name;
+        $loan_Category->max_hours = $request->max_hours;
+        $loan_Category->save();
+
         $loanable->barcode = $request->barcode;
         $loanable->note = $request->note;
         $loanable->state_id = $request->state_id;
+        $loanable->loan_category_id = $loan_category->id;
         $loanable->save();
 
         $bibliographicMateial->year = $request->year;
         $bibliographicMateial->signature = $request->signature;
         $bibliographicMateial->publication_place = $request->publication_place;
         $bibliographicMateial->editorial_id = $request->editorial_id;
+        $bibliographicMateial->loanable_id = $loanable->id;
         $bibliographicMateial->save(); 
 
-        $book->loanable_id = $loanable->id;
-        $book->bibliographic_materials_id = $bibliographicMateial->id;
-        $book->save();
         
         return $book;
     }
@@ -176,12 +190,20 @@ class BookController extends Controller
     public function destroy($id)
     {
         $book = Book::find($id);
+
         $id_BibliographicMaterial = $book->bibliographic_materials_id;
-        $id_loanable = $book->loanable_id;
+        $bibliographicMateial = BibliographicMaterial::find($id_BibliographicMaterial);
+       
+        $id_loanable = $bibliographicMateial->loanable_id;
+        $loanable = Loanable::find($id_loanable);
+
+        $id_loan_Category = $loanable->loan_Category_id;
+        $loan_Category = Loan_Category::find($id_loan_Category);
 
         Book::destroy($id);
         BibliographicMaterial::destroy($id_BibliographicMaterial);
         Loanable::destroy($id_loanable);
+        Loan_Category::destroy($id_loan_Category);
 
         return 1;
     }
