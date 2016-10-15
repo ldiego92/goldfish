@@ -18,6 +18,7 @@ class BibliographicMaterialSeeder extends Seeder
         		'signature' => "Signatura_".$i+1,
         		'publication_place' => 'Costa Rica_'.$i+1,
         		'editorial_id' => $i+1,
+				'loanable_id'=> $i+1,
         		]);
         }
     }
