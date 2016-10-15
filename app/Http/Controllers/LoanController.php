@@ -63,32 +63,24 @@ class LoanController extends Controller
      */
     public function store(Request $request)
     {
-<<<<<<< HEAD
-        //$this->authorize('borrower');
-
-        $barcode = $request->barcode;
-        $identification = $request->identification;
-        $departure_time = $request->departure_time;
-        $return_time = $request->return_time;
-
-        $loanale = Loanable::where('barcode', $barcode)->get();
-        return $loanale;
-        
-=======
         $loan =new Loan();
-
-        $loan->barcode = $request->barcode;
+		$barcode = $request->barcode;
+        $loanable = Loanable::where('barcode', $barcode)->first();
+		
         $loan->departure_time = $request->departure_time;
         $loan->user_id = $request->user_id;
         $loan->return_time = $request->return_time;
         $loan->authorizing_user = Auth::user();
-        $loan->loanable = $request->loanable_id; 
-
-        $loanable_id = Loanable::where('barcode', $barcode)->first();
-            
-        return $loan;
->>>>>>> 7c903f47f4ea9cf49cbd415d50bd1515f8ae9c27
+        $loan->loanable_id = $loanable->id; 
+		
+		if($loanable->state_id == 1){
+			$loanable->state_id = 2;
+			$loan->save();
+			return $loan;
+		}    
+        return null;
     }
+	
 
     /**
      * Display the specified resource.
