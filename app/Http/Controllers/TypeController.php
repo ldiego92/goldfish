@@ -17,7 +17,7 @@ class TypeController extends Controller
      */
     public function index()
     {
-        Type::all();
+        return Type::all();
     }
 
     /**
@@ -38,8 +38,10 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
-        $name = $request->name;
-		return true;
+		$type = new Type();
+        $type->name = $request->name;
+		$type->save();
+		return $type;
     }
 
     /**
@@ -50,7 +52,8 @@ class TypeController extends Controller
      */
     public function show($id)
     {
-        //
+        
+		return  Type::find($id);
     }
 
     /**
@@ -61,7 +64,7 @@ class TypeController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
@@ -73,8 +76,10 @@ class TypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $name = $request->name;
-		return true;
+		$type = Type::find($id);
+        $type->name = $request->name;
+		$type->save();
+		return $type;
     }
 
     /**
@@ -85,6 +90,11 @@ class TypeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $del = Type::destroy($id);
+	
+		if($del1==true) {
+			return 1;
+		}
+		return 0;
     }
 }

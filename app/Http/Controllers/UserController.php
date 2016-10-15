@@ -8,10 +8,16 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Role;
+use App\Student;
 use Auth;
 
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('cros', ['except' => ['create', 'edit']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -112,5 +118,25 @@ class UserController extends Controller
     public function destroy($id)
     {
         
+    }
+    public function searchByIdentification(Request $request){
+        sleep(1);
+
+        $student = Student::where('license', $request->identification)->first();
+         if(isset($student)){
+            $user = User::find($student->user_id);
+            $user->student;
+         } else {
+            if(is_numeric($request->identification)){
+                $user = User::where('identity_card', $request->identification)->first();
+                if(isset($user)){
+                    $user->student;
+                }
+            }
+         }
+         if(isset($user)){
+            return $user;
+         }
+         return null;
     }
 }
