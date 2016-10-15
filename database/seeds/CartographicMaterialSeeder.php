@@ -12,10 +12,10 @@ class CartographicMaterialSeeder extends Seeder
      */
     public function run()
     {
-        for ($i=0; $i < 20 ; $i++) { 
+        for ($i=11; $i < =15 ; $i++) { 
          CartographicMaterial::Create([
-                'bibliographic_materials_id' => $i+1,
-                'cartographic_format_id' => $i+1,
+                'bibliographic_materials_id' => $i,
+                'cartographic_format_id' => $i,
                 'dimension' => 'Dimension_' . $i,
              	]);
         }
