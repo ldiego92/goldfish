@@ -14,7 +14,7 @@ class TimePenaltySeeder extends Seeder
     {
         for($i=0; $i<20;$i++) {
 			TimePenalty::create([
-			'penalty_time_finish'=>'2016-10-'. 10+$i,
+			'penalty_time_finish'=>'2016-10-' . (10+$i),
 			
 			]);
 		}
