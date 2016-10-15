@@ -15,7 +15,7 @@ class LoanCategorySeeder extends Seeder
 		$num = 6;
             for($i=0;$i < 20; $i++){
         	LoanCategory::create([
-        		'limit_time'          => '22:00:'.$i + 10,
+        		'limit_time'          => '22:'. ($i + 10) . ":00",
         		'name'              =>  'name_' . $i,
         		'max_hours'  =>  $num,
         		]);
