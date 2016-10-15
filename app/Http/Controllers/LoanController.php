@@ -69,14 +69,14 @@ class LoanController extends Controller
 		$barcode = $request->barcode;
         $loanable = Loanable::where('barcode', $barcode)->first();
 		
-        $loan->departure_time = $request->departure_time;
+        $loan->departure_time = date('Y-m-d H:i:s');
         $loan->user_id = $request->user_id;
         $loan->return_time = $request->return_time;
         $loan->authorizing_user_id = 1;//Auth::user()->id;
         $loan->loanable_id = $loanable->id; 
 		
-		if($loanable->state_id == 1){
-			$loanable->state_id = 2;
+		if($loanable->state_id == $this->available){
+			$loanable->state_id = $this->borrowed;
 			$loanable->save();
 			$loan->save();
             $loan->loanable;
@@ -149,7 +149,7 @@ class LoanController extends Controller
             $loan->user_return_time = date('Y-m-d H:i:s');
             $loanable->save();
             $loan->save();
-        }
+        } 
         return $loan;
     }
 
@@ -164,5 +164,22 @@ class LoanController extends Controller
             }
         }
         return $loanById;
+    }
+
+
+    public function automaticLoan(Request $request){
+
+        $barcode = $request->barcode;
+        $loanable = Loanable::where('barcode', $barcode)->first();
+
+        if($loanable->state_id == $this->available){
+            //return 'entro arriba '.$loanable->state_id;
+            return $this->store($request);
+        }else{
+                        //return 'entro abajo '.$this->available;
+
+       return $this->returnLoan($request);
+        }
+        return null;
     } 
 }
