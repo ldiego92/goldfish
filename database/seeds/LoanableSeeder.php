@@ -17,6 +17,7 @@ class LoanableSeeder extends Seeder
                 'barcode' => $i,
                 'note' => 'Nota_' . $i,
                 'state_id' => $i + 1,
+                'loan_category_id' => $i + 1,
              	]);
          }
     }

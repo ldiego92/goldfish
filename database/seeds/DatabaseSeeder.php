@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(AuthorSeeder::class);
         $this->call(EditorialSeeder::class);
         $this->call(PeriodicPublicationSeeder::class);
+        $this->call(LoanCategorySeeder::class);
         $this->call(LoanableSeeder::class);
         $this->call(LoanSeeder::class);
         $this->call(AudiovisualEquipmentSeeder::class);
@@ -47,7 +48,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ThreeDimensionalObjectsSeeder::class);
         $this->call(ThreeDimensionalObjectKeyWordSeeder::class);
         $this->call(CartographicMaterialKeyWordSeeder::class);
-        $this->call(LoanCategorySeeder::class);
 
         Model::reguard();
     }
