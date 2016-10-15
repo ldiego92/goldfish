@@ -28,11 +28,8 @@ Route::resource('model','AudiovisualModelController');
 Route::resource('type','TypeController');
 Route::resource('cartographic-material','CartographicMaterialController');
 Route::resource('three-dimensional-object','ThreeDimensionalObjectController');
-<<<<<<< HEAD
+
 Route::resource('book','BookController');
-=======
-
-
 Route::get('loan-by-id','LoanController@returnLoanById');
 Route::get('gets', "LoanController@gets");
->>>>>>> 97893cb6f4823268e1d296b0753980f32ec7cf57
+
