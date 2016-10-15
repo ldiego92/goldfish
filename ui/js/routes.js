@@ -27,6 +27,7 @@ const app = new Vue({
   		disabled: false,
   	},
   	user:{},
+  	currentLoans:{},
   	modal:{
   		title:'',
   		message:'',
@@ -55,6 +56,7 @@ const app = new Vue({
 		    	app.user = msg;
 				app.searchUser.state = 'success';
 		    	$( "#barcode" ).focus();
+		    	getCurrentLoans(app.user.id);
 		    }else{
 		    	app.user = {};
 		    	app.searchUser.state = 'error';
@@ -95,5 +97,31 @@ function onEnter(element) {
 	    if(e.which == 13) {
 	        element.click();
 	    }
+	});
+}
+
+function getCurrentLoans(id) {
+	var xhr = $.ajax({
+	  	method: "GET",
+	  	url: wss + "loan-by-id",
+	  	data: { 
+	  		id: id
+	  	}
+	});
+	xhr.done(function( msg ) {
+	    console.log(msg);
+    	if(msg != null && msg != ''){
+	    	app.currentLoans = msg;
+	    }else{
+	    }
+	});
+	xhr.fail(function (msg) {
+	    app.user = {};
+		app.searchUser.state = 'error';
+	    $("#identification").focus();
+	    message("Existe un error de comunicación con el servidor, por favor reintente la ultima acción. Si el problema persiste solicite soporte técnico", "¡Ha ocurrido un inconveniente!");
+	});
+	xhr.always(function (msg) {
+		//app.searchUser.disabled = false;
 	});
 }

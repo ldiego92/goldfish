@@ -21,6 +21,7 @@ class LoanController extends Controller
     private $in_repair;
 
     public function __construct(){
+        $this->middleware('cros', ['except' => ['create', 'edit']]);
         $this->available = 1;
         $this->borrowed = 2;
         $this->out_of_service = 3;
