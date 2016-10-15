@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBooksTable extends Migration
+class LoanCategoryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,13 @@ class CreateBooksTable extends Migration
      */
     public function up()
     {
-        Schema::create('books', function (Blueprint $table) {
+            Schema::create('loan_categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('bibliographic_materials_id')->unsigned();
-
-            $table->foreign('bibliographic_materials_id')->references('id')->on('bibliographic_materials');
+            $table->time('limit_time');
+            $table->string('name');
+            $table->integer('max_hours');
             $table->timestamps();
-        });
+                    });
     }
 
     /**
@@ -28,6 +28,6 @@ class CreateBooksTable extends Migration
      */
     public function down()
     {
-        Schema::drop('books');
+        Schema::drop('loan_categories');
     }
 }

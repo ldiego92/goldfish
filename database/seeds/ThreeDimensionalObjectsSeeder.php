@@ -12,7 +12,7 @@ class ThreeDimensionalObjectsSeeder extends Seeder
      */
     public function run()
     {
-    	for ($i=1; $i < =5; $i++) { 
+    	for ($i=1; $i <=5; $i++) { 
 	        ThreeDimensionalObject::create([
 		        'physical_description'=> 'Descripcion_'.$i,
 		        'bibliographic_material_id'=> $i,
