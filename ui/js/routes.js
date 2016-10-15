@@ -190,5 +190,4 @@ function gets() {
 	   
 	    message("Existe un error de comunicación con el servidor, por favor reintente la ultima acción. Si el problema persiste solicite soporte técnico", "¡Ha ocurrido un inconveniente!");
 	});
-
 }
