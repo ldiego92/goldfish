@@ -145,7 +145,7 @@ function createLoan() {
 	});
 	xhr.done(function( msg ) {
 	    console.log(msg);
-    	
+    	app.currentLoans.push(msg.loanable);
 	});
 	xhr.fail(function (msg) {
 	   
@@ -156,13 +156,13 @@ function createLoan() {
 	});
 }
 
-function login() {
+function login(email, password) {
 	var xhr = $.ajax({
 	  	method: "GET",
 	  	url: wss + "login",
 	  	data: { 
-	  		email: 'diegojopiedra@gmail.com',
-	  		password: "1234"
+	  		email: email,//'diegojopiedra@gmail.com',
+	  		password: password// "1234"
 	  	}
 	});
 	xhr.done(function( msg ) {

@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return csrf_token();
 });
 
 Route::resource('loan','LoanController');
