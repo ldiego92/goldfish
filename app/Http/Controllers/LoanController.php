@@ -75,7 +75,7 @@ class LoanController extends Controller
         $loan->authorizing_user_id = 1;//Auth::user()->id;
         $loan->loanable_id = $loanable->id; 
 		
-		if($loanable->state_id == $this->available){
+		if($loanable->state_id == $this->available && isset($request->user_id) &&  $request->user_id != null && isset($loanable)){
 			$loanable->state_id = $this->borrowed;
 			$loanable->save();
 			$loan->save();
@@ -142,7 +142,7 @@ class LoanController extends Controller
         
         $loanable = Loanable::where('barcode', $barcode)->first();
 
-        $loan = Loan::where('loanable_id', $loanable->id)->orderBy('created_at', 'desc')->first();
+        $loan = Loan::where('loanable_id', $loanable->id)->orderBy('id', 'desc')->first();
         
         if($loanable->state_id == $this->borrowed && $loan->user_return_time == "0000-00-00 00:00:00"){
             $loanable->state_id = $this->available;
@@ -150,6 +150,7 @@ class LoanController extends Controller
             $loanable->save();
             $loan->save();
         } 
+        $loan->loanable;
         return $loan;
     }
 
@@ -172,14 +173,18 @@ class LoanController extends Controller
         $barcode = $request->barcode;
         $loanable = Loanable::where('barcode', $barcode)->first();
 
+        if(!isset($loanable) || $loanable == null){
+            return array('response' => "empty");
+        }
+
         if($loanable->state_id == $this->available){
             //return 'entro arriba '.$loanable->state_id;
             return $this->store($request);
-        }else{
+        }elseif($loanable->state_id == $this->borrowed){
                         //return 'entro abajo '.$this->available;
 
-       return $this->returnLoan($request);
+            return $this->returnLoan($request);
         }
-        return null;
+        return array('response' => "not available");
     } 
 }

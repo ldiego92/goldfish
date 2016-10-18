@@ -20,7 +20,7 @@ Route::resource('users','UserController');
 Route::get('login','UserController@login');
 Route::get('logout','UserController@logout');
 
-Route::get('automatic','LoanController@automaticLoan');
+Route::post('automatic-loan','LoanController@automaticLoan');
 
 Route::get('loan-test', 'LoanController@store');
 Route::post('search-by-identification','UserController@searchByIdentification');

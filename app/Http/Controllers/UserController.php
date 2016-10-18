@@ -121,7 +121,7 @@ class UserController extends Controller
         
     }
     public function searchByIdentification(Request $request){
-        sleep(1);
+        //sleep(1);
 
         $student = Student::where('license', $request->identification)->first();
          if(isset($student)){
