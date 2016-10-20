@@ -138,6 +138,6 @@ class UserController extends Controller
          if(isset($user)){
             return $user;
          }
-         return null;
+         return response(["response" => "empty"]);
     }
 }

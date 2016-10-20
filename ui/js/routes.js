@@ -84,7 +84,8 @@ const app = new Vue({
   		isOpen: false
   	},
   	barcode: '',
-  	return_time: ''
+  	return_time: '',
+  	hours: getHours()
   },
   methods:{
   	createLoan: function() {
@@ -101,6 +102,7 @@ const app = new Vue({
   	}
   }
 }).$mount('#app');
+app.user.identification = "103620626";
 $(document).ready(function () {
 	$("#identification").focus();
 
@@ -118,6 +120,16 @@ $(document).ready(function () {
 	    app.modal.isOpen = true;
 	});
 });
+
+function getHours() {
+	var hours = [];
+	var date = new Date();
+	for (var i = date.getHours(); i < 24; i++) {
+		hours.push(i+":00");
+		hours.push(i+":30");
+	}
+	return hours;
+}
 
 function getUserData() {
 	app.searchUser.state = 'warning';
@@ -148,6 +160,15 @@ function getUserData() {
 				message("Antes de hacer un prestamo al usuario " + app.user.identification + ", bebe hacer una actualzación de datos", "Actulizar usuario", "Actualizar");
 			}
 			
+		}else{
+			var id = app.user.identification;
+		   	toastr["error"]("Con la identificación: " + id, "No se encuentra en usuario");
+			app.user.clear();
+			app.currentLoans = [];
+			app.searchUser.state = 'error';
+			setTimeout(function () {
+				$("#identification").focus();
+			},500);
 		}
 			/*var date = new Date();
 			user = app.user = msg;
@@ -408,19 +429,19 @@ function automaticLoan() {
 	    	toastr["success"]("Placa: " + msg.loanable.barcode, "Préstamo exitoso");
 	    	app.currentLoans.push(msg);
 	    }else if(msg.user_return_time <= msg.return_time){ 
+		   	toastr["success"]("Placa: " + msg.loanable.barcode, "Devolución exitosa")
 	    	for (var i = 0; i < app.currentLoans.length; i++) {
 		   		var item = app.currentLoans[i];
 		   		if(item.id == msg.id){
 		   			app.currentLoans.splice(i, 1);
-		   			toastr["success"]("Placa: " + msg.loanable.barcode, "Devolución exitosa")
 		   		}
 		   	}
 	    }else{
+		   	toastr["error"]("Placa: " + msg.loanable.barcode, "Devolución tardría")
 	    	for (var i = 0; i < app.currentLoans.length; i++) {
 		   		var item = app.currentLoans[i];
 		   		if(item.id == msg.id){
 		   			app.currentLoans.splice(i, 1);
-		   			toastr["error"]("Placa: " + msg.loanable.barcode, "Devolución tardría")
 		   		}
 		   	}
 	    }
@@ -429,7 +450,11 @@ function automaticLoan() {
 
 	   	if(app.user.id == null){
 	   		getUserDataById(msg.user_id);
+	   	}else if(app.user.id != msg.user_id){
+	   		getUserDataById(msg.user_id);
+	   		toastr["info"]("Se ha cambiado de usuario para realizar la operación")
 	   	}
+
 	    setTimeout(function () {
 	    	$( "#barcode" ).focus();
 	    },500);

@@ -80,6 +80,13 @@ class LoanController extends Controller
 			$loanable->save();
 			$loan->save();
             $loan->loanable;
+        
+            $loan->audiovisualEquipment;
+            $loan->copyPeriodicPublication;
+            $loan->audiovisualMaterial;
+            $loan->cartographicMaterial;
+            $loan->threeDimensionalObject;
+        
 			return $loan;
 		}    
         return null;
@@ -99,7 +106,15 @@ class LoanController extends Controller
      */
     public function show($id)
     {
-        return Loan::find($id);
+        $loan = Loan::find($id);
+        if(isset($loan)){
+            $loan->audiovisualEquipment;
+            $loan->copyPeriodicPublication;
+            $loan->audiovisualMaterial;
+            $loan->cartographicMaterial;
+            $loan->threeDimensionalObject;
+        }
+        return $loan;
     }
 
     /**
@@ -162,6 +177,13 @@ class LoanController extends Controller
             $loanById = Loan::where('user_id' ,'=', $user->id)->where('user_return_time' ,'=', '0000-00-00 00:00:00')->get();
             foreach ($loanById as $loan) {
                 $loan->loanable;
+                if(isset($loan)){
+                    $loan->audiovisualEquipment;
+                    $loan->copyPeriodicPublication;
+                    $loan->audiovisualMaterial;
+                    $loan->cartographicMaterial;
+                    $loan->threeDimensionalObject;
+                }
             }
         }
         return $loanById;

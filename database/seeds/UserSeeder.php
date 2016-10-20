@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             'home_phone' => 0,
             'cell_phone' => rand(30000000,89999999),
             'next_update_time' => '2017-04-06',
-            'active' => 'true',
+            'active' => true,
             'role_id' => 1,
         ]);
         $nums = array();
@@ -38,7 +38,7 @@ class UserSeeder extends Seeder
                 'home_phone' => rand(30000000,89999999),
                 'cell_phone' => rand(30000000,89999999),
                 'next_update_time' => '2010-4-'.$i,
-                'active' => 'true',
+                'active' => true,
                 'role_id' => $i+1,
             ]);
         }
