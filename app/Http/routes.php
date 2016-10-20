@@ -19,7 +19,7 @@ Route::resource('loan','LoanController');
 Route::resource('users','UserController');
 Route::get('login','UserController@login');
 Route::get('logout','UserController@logout');
-Route::get('loan-test', 'LoanController@store');
+Route::get('loan', 'LoanController@store');
 Route::post('search-by-identification','UserController@searchByIdentification');
 Route::get('search-by-identification','UserController@searchByIdentification');
 Route::resource('audiovisual-equipment', 'AudiovisualEquipmentController');
@@ -28,6 +28,10 @@ Route::resource('model','AudiovisualModelController');
 Route::resource('type','TypeController');
 Route::resource('cartographic-material','CartographicMaterialController');
 Route::resource('three-dimensional-object','ThreeDimensionalObjectController');
+
+Route::get('store','UserController@store');
+Route::get('update/{id}','UserController@update');
+Route::get('search-by-name','UserController@searchByName');
 
 
 Route::get('loan-by-id','LoanController@returnLoanById');

@@ -6,18 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\User;
-use App\Role;
 use App\Student;
-use Auth;
+use App\User;
 
-class UserController extends Controller
+class StudentController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('cros', ['except' => ['create', 'edit']]);
-    }
     /**
      * Display a listing of the resource.
      *
@@ -25,11 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        if(isset($user) && $user->role_id == 1){
-            return User::all();
-        }
-        return [];
+        return Student::all();
     }
 
     /**
@@ -40,20 +29,6 @@ class UserController extends Controller
     public function create()
     {
         //
-    }
-
-    public function logout()
-    {
-        return Auth::logout();
-    }
-
-    public function login(Request $request)
-    {
-        //return $request->email;
-        if(Auth::attempt(['email' =>  $request->email, 'password' =>  $request->password])){
-            return Auth::user();
-        }
-        return null;
     }
 
     /**
@@ -77,12 +52,19 @@ class UserController extends Controller
 		$user->active = $request->active;
 		$user->role_id = $request->role_id;
 		$user->save();
-		if(isset($user)) {
-		    return $user;	
+		
+	    $id_user = User::where('identity_card', $request->identity_card)->first()->id;
+
+		$student = new Student();
+		$student->user_id = $id_user;
+		$student->license = $request->license;
+		$student->save();
+		
+		if(isset($student)) {
+		    return $student;	
 		} else {
 			return null;
 		}
-		
     }
 
     /**
@@ -93,28 +75,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = Auth::user();
-        if($user->id == $id || $user->role_id == 1){
-
-            $userFind = User::find($id);
-            $userFind->role;
-            return $userFind;
-            
-        }
-        return null;
+        return Student::find($id);
     }
-	
-	public function searchByName(Request $request){
-		$txt = $request->txt;
-		$txts = explode(" " , $txt);
-		$result = null;
-		if(isset($txts[1])) {
-			$result = User::where('name', 'like','%'.$txts[0].'%')->orwhere('last_name', 'like','%'.$txts[1].'%')->get();
-		} else {
-			$result = User::where('name', 'like','%'.$txts[0].'%')->orwhere('last_name', 'like','%'.$txts[0].'%')->get();
-		}
-        return $result;
-	}
 
     /**
      * Show the form for editing the specified resource.
@@ -150,8 +112,12 @@ class UserController extends Controller
 		$user->role_id = $request->role_id;
 		$user->save();
 		
-		if(isset($user)) {
-		    return $user;	
+		$student = Student::where('user_id',$user->id)->first();
+		$student->license = $request->license;
+		$student->save();
+		
+	    if(isset($student)) {
+		    return $student;	
 		} else {
 			return null;
 		}
@@ -165,31 +131,10 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $del1 = User::destroy($id);
-		if($del1==true) {
+        $del = Student::destroy($id);
+		if($del==true) {
 		return 1;
 		}
 		return 0; 
-    }
-	
-    public function searchByIdentification(Request $request){
-        sleep(1);
-
-        $student = Student::where('license', $request->identification)->first();
-         if(isset($student)){
-            $user = User::find($student->user_id);
-            $user->student;
-         } else {
-            if(is_numeric($request->identification)){
-                $user = User::where('identity_card', $request->identification)->first();
-                if(isset($user)){
-                    $user->student;
-                }
-            }
-         }
-         if(isset($user)){
-            return $user;
-         }
-         return null;
     }
 }
