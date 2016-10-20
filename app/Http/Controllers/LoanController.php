@@ -172,11 +172,8 @@ class LoanController extends Controller
         $loanable = Loanable::where('barcode', $barcode)->first();
 
         if($loanable->state_id == $this->available){
-            //return 'entro arriba '.$loanable->state_id;
             return $this->store($request);
         }else{
-                        //return 'entro abajo '.$this->available;
-
        return $this->returnLoan($request);
         }
         return null;

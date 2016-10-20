@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return csrf_token();
 });
 
 Route::resource('loan','LoanController');
@@ -32,6 +32,12 @@ Route::resource('type','TypeController');
 Route::resource('cartographic-material','CartographicMaterialController');
 Route::resource('three-dimensional-object','ThreeDimensionalObjectController');
 
+Route::get('loan-by-id','LoanController@returnLoanById');
+Route::get('gets', "LoanController@gets");
+Route::resource('book','BookController');
+
 
 Route::get('loan-by-id','LoanController@returnLoanById');
 Route::get('gets', "LoanController@gets");
+
+Route::post('return-loan', 'LoanController@returnLoan');

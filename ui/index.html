@@ -156,7 +156,7 @@
 						</select>
 					</div>
 					<div class="col-xs-12 col-sm-3">
-						<input type="text" class="form-control" id="barcode" placeholder="Código de barras" aria-describedby="barcode" v-model="barcode" style="text-transform:uppercase">
+						<input type="text" class="form-control" id="barcode" placeholder="Código de barras" aria-describedby="barcode" v-model="barcode" style="text-transform:uppercase" v-on:keyup.enter="createLoan">
 					</div>
 				</div>	
 				<div class="row">
