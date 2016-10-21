@@ -35,4 +35,6 @@ Route::get('search-by-name','UserController@searchByName');
 
 
 Route::get('loan-by-id','LoanController@returnLoanById');
+Route::get('return', "LoanController@returnLoan");
 Route::get('gets', "LoanController@gets");
+Route::get('updateEq/{id}', 'AudiovisualEquipmentController@update');

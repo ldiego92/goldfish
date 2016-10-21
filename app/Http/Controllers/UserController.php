@@ -108,8 +108,9 @@ class UserController extends Controller
 		$txt = $request->txt;
 		$txts = explode(" " , $txt);
 		$result = null;
+		
 		if(isset($txts[1])) {
-			$result = User::where('name', 'like','%'.$txts[0].'%')->orwhere('last_name', 'like','%'.$txts[1].'%')->get();
+			$result = User::where('name', 'like','%'.$txts[0].'%')->where('last_name', 'like','%'.$txts[1].'%')->get();
 		} else {
 			$result = User::where('name', 'like','%'.$txts[0].'%')->orwhere('last_name', 'like','%'.$txts[0].'%')->get();
 		}
