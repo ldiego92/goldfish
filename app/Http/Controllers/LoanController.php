@@ -72,21 +72,13 @@ class LoanController extends Controller
         $loan->departure_time = date('Y-m-d H:i:s');
         $loan->user_id = $request->user_id;
         $loan->return_time = $request->return_time;
-        $loan->authorizing_user_id = 1;//Auth::user()->id;
+        $loan->authorizing_user_id = Auth::user()->id;
         $loan->loanable_id = $loanable->id; 
 		
 		if($loanable->state_id == $this->available && isset($request->user_id) &&  $request->user_id != null && isset($loanable)){
 			$loanable->state_id = $this->borrowed;
 			$loanable->save();
 			$loan->save();
-            $loan->loanable;
-        
-            $loan->audiovisualEquipment;
-            $loan->copyPeriodicPublication;
-            $loan->audiovisualMaterial;
-            $loan->cartographicMaterial;
-            $loan->threeDimensionalObject;
-        
 			return $loan;
 		}    
         return null;
@@ -94,7 +86,7 @@ class LoanController extends Controller
 
     public function gets()
     {
-        return  response()->json(['a' => Auth::user()])->setCallback($request->input('callback'));//Auth::user());
+        return Auth::user();
     }
 	
 
@@ -200,10 +192,8 @@ class LoanController extends Controller
         }
 
         if($loanable->state_id == $this->available){
-            //return 'entro arriba '.$loanable->state_id;
             return $this->store($request);
         }elseif($loanable->state_id == $this->borrowed){
-                        //return 'entro abajo '.$this->available;
 
             return $this->returnLoan($request);
         }
