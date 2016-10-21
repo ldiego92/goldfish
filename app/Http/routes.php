@@ -15,6 +15,7 @@ Route::get('/', function () {
     return csrf_token();
 });
 
+
 Route::resource('loan','LoanController');
 Route::resource('users','UserController');
 Route::get('login','UserController@login');
@@ -23,6 +24,7 @@ Route::get('logout','UserController@logout');
 Route::post('automatic-loan','LoanController@automaticLoan');
 
 Route::get('loan-test', 'LoanController@store');
+
 Route::post('search-by-identification','UserController@searchByIdentification');
 Route::get('search-by-identification','UserController@searchByIdentification');
 Route::resource('audiovisual-equipment', 'AudiovisualEquipmentController');
@@ -35,6 +37,9 @@ Route::resource('three-dimensional-object','ThreeDimensionalObjectController');
 Route::get('loan-by-id','LoanController@returnLoanById');
 Route::get('gets', "LoanController@gets");
 Route::resource('book','BookController');
+Route::get('store','UserController@store');
+Route::get('update/{id}','UserController@update');
+Route::get('search-by-name','UserController@searchByName');
 
 
 Route::get('loan-by-id','LoanController@returnLoanById');
