@@ -45,7 +45,7 @@ class CartographicMaterialController extends Controller
          $bibliographicMaterial = new BibliographicMaterial();
         $loanable = new Loanable();
         $cartographicMaterial = new CartographicMaterial();
-        $cartographicMaterialKeyWord =  new CartographicMaterialKeyWord;     
+        $cartographicMaterialKeyWord =  new CartographicMaterialKeyWord();     
        
         $loanable->barcode = $request->barcode;
         $loanable->note = $request->note;
@@ -63,7 +63,11 @@ class CartographicMaterialController extends Controller
         $cartographicMaterial->bibliographic_materials_id = $bibliographicMaterial->id;        
         $cartographicMaterial->cartographic_format_id = $request->cartographic_format_id;
         $cartographicMaterial->dimension = $request->dimension;
-        $cartographicMaterial->save();        
+        $cartographicMaterial->save();
+        
+        $cartographicMaterialKeyWord->cartographic_material_id = $cartographicMaterial->id;
+        $cartographicMaterialKeyWord->key_word_id = $request->key_word_id;
+        $cartographicMaterialKeyWord->save();
         
         return $cartographicMaterial;
     }
@@ -101,10 +105,11 @@ class CartographicMaterialController extends Controller
      */
     public function update(Request $request, $id)
     {
-       $bibliographicMaterial = new BibliographicMaterial();
-        $loanable = new Loanable();
-        $cartographicMaterial = new CartographicMaterial();
-        $cartographicMaterialKeyWord =  new CartographicMaterialKeyWord;     
+        $cartographicMaterial = CartographicMaterial::find($id);
+        $bibliographicMaterial = BibliographicMaterial::find($cartographicMaterial->bibliographic_materials_id);
+        $loanable = Loanable::find($bibliographicMaterial->loanable_id);
+        
+        $cartographicMaterialKeyWord =  CartographicMaterialKeyWord::find($cartographicMaterial->id);     
        
         $loanable->barcode = $request->barcode;
         $loanable->note = $request->note;
@@ -122,7 +127,12 @@ class CartographicMaterialController extends Controller
         $cartographicMaterial->bibliographic_materials_id = $bibliographicMaterial->id;        
         $cartographicMaterial->cartographic_format_id = $request->cartographic_format_id;
         $cartographicMaterial->dimension = $request->dimension;
-        $cartographicMaterial->save();        
+        $cartographicMaterial->save();
+        
+        $cartographicMaterialKeyWord->cartographic_material_id = $cartographicMaterial->id;
+        $cartographicMaterialKeyWord->key_word_id = $request->key_word_id;
+        $cartographicMaterialKeyWord->save();
+        
         
         return $cartographicMaterial;
     }

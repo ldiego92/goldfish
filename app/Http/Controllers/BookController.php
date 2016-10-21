@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+<<<<<<< HEAD
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Book;
 use App\BibliographicMaterial;
 use App\Loanable;
 use APP\LoanCategory;
+=======
+use App\Book;
+use App\Http\Requests;
+use App\Http\Controllers\Controller;
+>>>>>>> SERGIOSU-master
 
 class BookController extends Controller
 {
@@ -20,7 +26,17 @@ class BookController extends Controller
      */
     public function index()
     {
+<<<<<<< HEAD
         return Book::all();
+=======
+        /*$book = new Book();
+        $book->title = "Cuentos de mi tia panchita";
+        $book->bacorde = "AU0218";
+        $book->author = "Carm";
+        $book->save();*/
+        $books = Book::all();
+        return $books;
+>>>>>>> SERGIOSU-master
     }
 
     /**
@@ -30,7 +46,11 @@ class BookController extends Controller
      */
     public function create()
     {
+<<<<<<< HEAD
       //
+=======
+        //
+>>>>>>> SERGIOSU-master
     }
 
     /**
@@ -41,6 +61,7 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
+<<<<<<< HEAD
         $book = new Book();
         $bibliographicMateial = new BibliographicMaterial();
         $loanable = new Loanable();
@@ -61,6 +82,9 @@ class BookController extends Controller
         $book->bibliographic_materials_id = $bibliographicMateial->id;
         $book->save();
         return $book;
+=======
+        //
+>>>>>>> SERGIOSU-master
     }
 
     /**
@@ -94,6 +118,7 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
+<<<<<<< HEAD
         $book = Book::find($id);
         $bibliographicMaterial = BibliographicMaterial::find($book->bibliographic_materials_id);
         $loanable = Loanable::find($bibliographicMaterial->loanable_id);
@@ -114,6 +139,9 @@ class BookController extends Controller
         $book->bibliographic_materials_id = $bibliographicMaterial->id;
         $book->save();
         return $book;
+=======
+        //
+>>>>>>> SERGIOSU-master
     }
 
     /**
@@ -124,6 +152,7 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
+<<<<<<< HEAD
         $book = Book::find($id);
 
         $id_BibliographicMaterial = $book->bibliographic_materials_id;
@@ -137,4 +166,8 @@ class BookController extends Controller
         return 1;
     }
         
+=======
+        //
+    }
+>>>>>>> SERGIOSU-master
 }

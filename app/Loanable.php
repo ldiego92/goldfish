@@ -10,7 +10,7 @@ class Loanable extends Model
 		return $this->belongsTo('App\State');
 	}
 	
-	public function loan() {
+	public function loans() {
 		return $this->hasMany('App\Loan');
 	}
 	
