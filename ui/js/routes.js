@@ -235,11 +235,8 @@ function returnLaon(barcode) {
 	   
 	    message("Existe un error de comunicación con el servidor, por favor reintente la ultima acción. Si el problema persiste solicite soporte técnico", "¡Ha ocurrido un inconveniente!");
 	});
-<<<<<<< HEAD
-=======
 	xhr.always(function (msg, asd) {
 		//app.searchUser.disabled = false;
 		console.log('Always msg = ', msg, " asd = ", asd)
 	});
->>>>>>> c97f576caf8ae43ec6361e24829e5afac85c2c8a
 }
