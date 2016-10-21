@@ -34,15 +34,12 @@ Route::resource('type','TypeController');
 Route::resource('cartographic-material','CartographicMaterialController');
 Route::resource('three-dimensional-object','ThreeDimensionalObjectController');
 
-Route::get('loan-by-id','LoanController@returnLoanById');
-Route::get('gets', "LoanController@gets");
 Route::resource('book','BookController');
 Route::get('store','UserController@store');
 Route::get('update/{id}','UserController@update');
 Route::get('search-by-name','UserController@searchByName');
 
 
-Route::get('loan-by-id','LoanController@returnLoanById');
-Route::get('gets', "LoanController@gets");
+
 
 Route::post('return-loan', 'LoanController@returnLoan');
