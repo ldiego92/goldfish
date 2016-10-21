@@ -43,3 +43,8 @@ Route::get('search-by-name','UserController@searchByName');
 
 
 Route::post('return-loan', 'LoanController@returnLoan');
+
+
+Route::resource('periodic-publication','PeriodicPublicationController');
+Route::resource('copy-periodic-publication','CopyPeriodicPublicationController');
+

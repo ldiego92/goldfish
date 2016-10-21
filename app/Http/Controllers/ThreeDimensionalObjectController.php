@@ -104,10 +104,11 @@ class ThreeDimensionalObjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $bibliographicMaterial = new BibliographicMaterial();
-        $loanable = new Loanable();
-        $threeDimensionalObject = new ThreeDimensionalObject();
-        $threeDimensionalObjectKeyWord =  new ThreeDimensionalObjectKeyWord();
+        
+        $threeDimensionalObject =  ThreeDimensionalObject::find($id);
+        $bibliographicMaterial = BibliographicMaterial::find($threeDimensionalObject->bibliographic_materials_id);
+        $loanable = Loanable::find($bibliographicMaterial->loanable_id);
+        $threeDimensionalObjectKeyWord =   ThreeDimensionalObjectKeyWord::find($threeDimensionalObject->id);
        
         $loanable->barcode = $request->barcode;
         $loanable->note = $request->note;
