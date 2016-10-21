@@ -38,3 +38,8 @@ Route::get('loan-by-id','LoanController@returnLoanById');
 Route::get('gets', "LoanController@gets");
 
 Route::post('return-loan', 'LoanController@returnLoan');
+
+Route::resource('periodic-publication','PeriodicPublicationController');
+Route::resource('copy-periodic-publication','CopyPeriodicPublicationController');
+
+
