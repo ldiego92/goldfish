@@ -15,6 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('stat','StatisticsController@getStatistics');
 Route::resource('loan','LoanController');
 Route::resource('users','UserController');
 Route::get('login','UserController@login');
