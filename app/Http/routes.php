@@ -20,8 +20,13 @@ Route::resource('loan','LoanController');
 Route::resource('users','UserController');
 Route::get('login','UserController@login');
 Route::get('logout','UserController@logout');
+Route::get('loginPrueba', 'UserController@loginPrueba');
+Route::get('logoutPrueba', 'UserController@logoutPrueba');
 
-Route::post('automatic-loan','LoanController@automaticLoan');
+Route::group(['middleware' => 'jwt-auth'], function () {
+	Route::post('automatic-loan','LoanController@automaticLoan');
+	Route::get('huhu', 'UserController@huhu');
+});
 
 Route::get('loan-test', 'LoanController@store');
 

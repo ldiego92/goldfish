@@ -524,3 +524,34 @@ function User(id, name, last_name, email, identity_card, birthdate, home_phone, 
 		}
 	}
 }
+
+function Prueba(){
+	// $.ajax({
+	// 	url: "loginPrueba",
+	// 	dataType: "json",
+	// 	type: "POST",
+	// 	data: {"email":"diegojopiedra@gmail.com","password":"1234"},
+	// 	success: function (data) {
+	// 		alert("user created successfully")
+	// 	}
+	// });
+
+	var xhr = $.ajax({
+	  	method: "GET",
+        dataType: 'json',
+	  	url: wss + "loginPrueba",
+	  	data: { 
+	  		email:'diegojopiedra@gmail.com',
+	  		password: "1234",
+	  		//token: 'eyJpdiI6IlwvWmJZM2dqQ3F3UkhMTU5cL0k3Z2psQT09IiwidmFsdWUiOiJCaWxoMEJRTjdTa0djTWdcL2tCVml1QzBabU5xYjY4NEM4UXJhWXNxQ2JPSDFacGozOGNQM1dkRTFqd0dpQzZNeVBQVmNxUGx2NEVVMDllNTAydlY3U1E9PSIsIm1hYyI6IjVjMGZmN2I2NDY4NzVmYTc0MzYyMGZiYzI5MmNlZTYzZGY0ODUxNDIwYTRiYmRmN2RiMTNlODZhNzliMmY3YzEifQ'
+	  	}
+	});
+	xhr.done(function( msg ) {
+	    console.log(msg);
+    	
+	});
+	xhr.fail(function (msg) {
+	   
+	    message("Existe un error de comunicación con el servidor, por favor reintente la ultima acción. Si el problema persiste solicite soporte técnico", "¡Ha ocurrido un inconveniente!");
+	});
+}

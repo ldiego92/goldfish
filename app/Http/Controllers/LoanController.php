@@ -198,5 +198,5 @@ class LoanController extends Controller
             return $this->returnLoan($request);
         }
         return array('response' => "not available");
-    } 
+    }
 }
