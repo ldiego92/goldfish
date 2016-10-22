@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Role;
 use App\Student;
+use Hash;
+use JWTAuth;
 use Auth;
 
 class UserController extends Controller
@@ -18,6 +20,8 @@ class UserController extends Controller
     {
         $this->middleware('cros', ['except' => ['create', 'edit']]);
     }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -49,7 +53,7 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        //return $request->email;
+        
         if(Auth::attempt(['email' =>  $request->email, 'password' =>  $request->password])){
             return Auth::user();
         }
@@ -192,5 +196,31 @@ class UserController extends Controller
             return $user;
          }
          return response(["response" => "empty"]);
+    }
+
+
+    public function loginPrueba(Request $request){
+
+        $input = $request->all();
+
+        $get = $token = JWTAuth::attempt($input);
+        if (!$token = JWTAuth::attempt($input)) {
+            return response()->json(['result' => 'El usuario o contraseña no es correcta']);
+        }
+             return response()->json(['result' => $token]);
+    }
+
+         public function huhu(Request $request)
+    {
+        $input = $request->all();
+        $user = JWTAuth::toUser($input['token']);
+        return response()->json(['result' => $user]);
+    }
+
+    public function logoutPrueba(Request $request){
+         $input = $request->all();
+
+        //JWTAuth::invalidate($input['token']);
+        return (JWTAuth::invalidate($input['token']))?'1':'0';
     }
 }
