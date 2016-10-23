@@ -69,14 +69,14 @@ class LoanController extends Controller
 		$barcode = $request->barcode;
         $loanable = Loanable::where('barcode', $barcode)->first();
 		
-        $loan->departure_time = $request->departure_time;
+        $loan->departure_time = date('Y-m-d H:i:s');
         $loan->user_id = $request->user_id;
         $loan->return_time = $request->return_time;
         $loan->authorizing_user_id = Auth::user()->id;
         $loan->loanable_id = $loanable->id; 
 		
-		if($loanable->state_id == 1){
-			$loanable->state_id = 2;
+		if($loanable->state_id == $this->available && isset($request->user_id) &&  $request->user_id != null && isset($loanable)){
+			$loanable->state_id = $this->borrowed;
 			$loanable->save();
 			$loan->save();
 			return $loan;
@@ -98,7 +98,15 @@ class LoanController extends Controller
      */
     public function show($id)
     {
-        return Loan::find($id);
+        $loan = Loan::find($id);
+        if(isset($loan)){
+            $loan->audiovisualEquipment;
+            $loan->copyPeriodicPublication;
+            $loan->audiovisualMaterial;
+            $loan->cartographicMaterial;
+            $loan->threeDimensionalObject;
+        }
+        return $loan;
     }
 
     /**
@@ -141,14 +149,15 @@ class LoanController extends Controller
         
         $loanable = Loanable::where('barcode', $barcode)->first();
 
-        $loan = Loan::where('loanable_id', $loanable->id)->orderBy('created_at', 'desc')->first();
+        $loan = Loan::where('loanable_id', $loanable->id)->orderBy('id', 'desc')->first();
         
         if($loanable->state_id == $this->borrowed && $loan->user_return_time == "0000-00-00 00:00:00"){
             $loanable->state_id = $this->available;
             $loan->user_return_time = date('Y-m-d H:i:s');
             $loanable->save();
             $loan->save();
-        }
+        } 
+        $loan->loanable;
         return $loan;
     }
 
@@ -160,8 +169,34 @@ class LoanController extends Controller
             $loanById = Loan::where('user_id' ,'=', $user->id)->where('user_return_time' ,'=', '0000-00-00 00:00:00')->get();
             foreach ($loanById as $loan) {
                 $loan->loanable;
+                if(isset($loan)){
+                    $loan->audiovisualEquipment;
+                    $loan->copyPeriodicPublication;
+                    $loan->audiovisualMaterial;
+                    $loan->cartographicMaterial;
+                    $loan->threeDimensionalObject;
+                }
             }
         }
         return $loanById;
-    } 
+    }
+
+
+    public function automaticLoan(Request $request){
+
+        $barcode = $request->barcode;
+        $loanable = Loanable::where('barcode', $barcode)->first();
+
+        if(!isset($loanable) || $loanable == null){
+            return array('response' => "empty");
+        }
+
+        if($loanable->state_id == $this->available){
+            return $this->store($request);
+        }elseif($loanable->state_id == $this->borrowed){
+
+            return $this->returnLoan($request);
+        }
+        return array('response' => "not available");
+    }
 }
