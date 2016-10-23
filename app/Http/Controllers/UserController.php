@@ -64,25 +64,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = new User();
-		$user->identity_card = $request->identity_card;
-		$user->name = $request->name;
-		$user->last_name = $request->last_name;
-		$user->email = $request->email;
-		$user->birthdate = $request->birthdate;
-		$user->home_phone = $request->home_phone;
-		$user->cell_phone = $request->cell_phone;
-		$user->password = bcrypt($request->password);
-		$user->next_update_time = $request->next_update_time;
-		$user->active = $request->active;
-		$user->role_id = $request->role_id;
-		$user->save();
-		if(isset($user)) {
-		    return $user;	
-		} else {
-			return null;
-		}
-		
+        //
     }
 
     /**
@@ -103,18 +85,6 @@ class UserController extends Controller
         }
         return null;
     }
-	
-	public function searchByName(Request $request){
-		$txt = $request->txt;
-		$txts = explode(" " , $txt);
-		$result = null;
-		if(isset($txts[1])) {
-			$result = User::where('name', 'like','%'.$txts[0].'%')->orwhere('last_name', 'like','%'.$txts[1].'%')->get();
-		} else {
-			$result = User::where('name', 'like','%'.$txts[0].'%')->orwhere('last_name', 'like','%'.$txts[0].'%')->get();
-		}
-        return $result;
-	}
 
     /**
      * Show the form for editing the specified resource.
@@ -136,25 +106,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
-		$user->identity_card = $request->identity_card;
-		$user->name = $request->name;
-		$user->last_name = $request->last_name;
-		$user->email = $request->email;
-		$user->birthdate = $request->birthdate;
-		$user->home_phone = $request->home_phone;
-		$user->cell_phone = $request->cell_phone;
-		$user->password = bcrypt($request->password);
-		$user->next_update_time = $request->next_update_time;
-		$user->active = $request->active;
-		$user->role_id = $request->role_id;
-		$user->save();
-		
-		if(isset($user)) {
-		    return $user;	
-		} else {
-			return null;
-		}
+        //
     }
 
     /**
@@ -165,13 +117,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $del1 = User::destroy($id);
-		if($del1==true) {
-		return 1;
-		}
-		return 0; 
+        
     }
-	
     public function searchByIdentification(Request $request){
         sleep(1);
 
