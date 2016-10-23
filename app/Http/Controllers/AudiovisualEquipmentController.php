@@ -8,7 +8,6 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\AudiovisualEquipment;
 use App\Loanable;
-use DB;
 
 class AudiovisualEquipmentController extends Controller
 {
@@ -40,29 +39,21 @@ class AudiovisualEquipmentController extends Controller
      */
     public function store(Request $request)
     {
-		DB::beginTransaction();
-		try 
-		{
-			$loanable = new Loanable();
-			$loanable->barcode = $request->barcode;
-			$loanable->note = $request->note;
-			$loanable->state_id = $request->state_id;
-			$loanable->save();
+		$loanable = new Loanable();
+		$loanable->barcode = $request->barcode;
+		$loanable->note = $request->note;
+		$loanable->state_id = $request->state_id;
+		$loanable->save();
 
-			$id_loanable = Loanable::where('barcode', $request->barcode)->first()->id;
+		$id_loanable = Loanable::where('barcode', $request->barcode)->first()->id;
 
-			$audiovisualEq = new AudiovisualEquipment();
-			$audiovisualEq->brand_id = $request->brand_id;
-			$audiovisualEq->model_id = $request->model_id;
-			$audiovisualEq->type_id = $request->type_id;
-			$audiovisualEq->loanable_id = $id_loanable;
-			$audiovisualEq->save();
-		} catch(\Exception $e) 
-		{
-			DB::rollback();
-			return null;
-		}
-		DB::commit();
+		$audiovisualEq = new AudiovisualEquipment();
+		$audiovisualEq->brand_id = $request->brand_id;
+		$audiovisualEq->model_id = $request->model_id;
+		$audiovisualEq->type_id = $request->type_id;
+		$audiovisualEq->loanable_id = $id_loanable;
+		$audiovisualEq->save();
+
 		return $audiovisualEq;
     }
 
@@ -97,26 +88,19 @@ class AudiovisualEquipmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-		DB::beginTransaction();
-		try
-		{
-			$audiovisualEq = AudiovisualEquipment::find($id);
-			$audiovisualEq->brand_id = $request->brand_id;
-			$audiovisualEq->model_id = $request->model_id;
-			$audiovisualEq->type_id = $request->type_id;
-			$audiovisualEq->save();
+		$audiovisualEq = AudiovisualEquipment::find($id);
+		$audiovisualEq->brand_id = $request->brand_id;
+		$audiovisualEq->model_id = $request->model_id;
+		$audiovisualEq->type_id = $request->type_id;
+		$audiovisualEq->save();
 
-			$loanable = Loanable::find($audiovisualEq->loanable_id);
-			$loanable->barcode = $request->barcode;
-			$loanable->note = $request->note;
-			$loanable->state_id = $request->state_id;
-			$loanable->save();
-			
-		}catch(\Exception $e) {
-			DB::rollback();
-			return null;
-		}
-		DB::commit();
+		$loanable = Loanable::find($audiovisualEq->loanable_id);
+		$loanable->barcode = $request->barcode;
+		$loanable->note = $request->note;
+		$loanable->state_id = $request->state_id;
+		$loanable->save();
+
+
 		return $audiovisualEq;
     }
 
@@ -130,18 +114,12 @@ class AudiovisualEquipmentController extends Controller
     {
         $audiovisualEq = AudiovisualEquipment::find($id);
         $loanable_id = $audiovisualEq->loanable_id;
-		
-		DB:beginTransaction();
-		try 
-		{
-			AudiovisualEquipment::destroy($id);
-			Loanable::destroy($loanable_id);
-		}catch(\Exception $e) 
-		{
-		    DB::rollback();
-			return 0;
-		}
-		DB::commit();
+
+        $del1 = AudiovisualEquipment::destroy($id);
+        $del2 = Loanable::destroy($loanable_id);
+		if($del1==true && $del2==true) {
 		return 1;
+		}
+		return 0;
     }
 }

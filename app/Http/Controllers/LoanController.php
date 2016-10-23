@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Http\Controllers;
 use Hash;
 use Illuminate\Http\Request;
+
 use Gate;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -11,13 +13,14 @@ use App\Loan;
 use App\Penalty;
 use App\Role;
 use Auth;
-use DB;
+
 class LoanController extends Controller
 {
     private $available;
     private $borrowed;
     private $out_of_service;
     private $in_repair;
+
     public function __construct(){
         $this->middleware('cros', ['except' => ['create', 'edit']]);
         $this->available = 1;
@@ -25,6 +28,7 @@ class LoanController extends Controller
         $this->out_of_service = 3;
         $this->in_repair = 4;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -34,6 +38,7 @@ class LoanController extends Controller
     {
         Loan::all();
     }
+
     private function getConcreteLoanalbe($loanable)
     {
         $concreteTypes = [
@@ -43,6 +48,7 @@ class LoanController extends Controller
             'cartographicMaterial',
             'threeDimensionalObject',
         ];
+
         foreach ($concreteTypes as $type) {
             if($loanable->$type != null){
                 return $loanable->$type; 
@@ -50,6 +56,7 @@ class LoanController extends Controller
         }
         
     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -69,26 +76,20 @@ class LoanController extends Controller
         $loan->loanable_id = $loanable->id; 
 		
 		if($loanable->state_id == 1){
-			DB::beginTransaction();
-			try {
 			$loanable->state_id = 2;
 			$loanable->save();
 			$loan->save();
-			} catch (\Exception $e)
-			{
-			DB::rollback();
-			return null;
-			}
-			DB::commit();
 			return $loan;
 		}    
         return null;
     }
+
     public function gets()
     {
         return Auth::user();
     }
 	
+
     /**
      * Display the specified resource.
      *
@@ -99,6 +100,7 @@ class LoanController extends Controller
     {
         return Loan::find($id);
     }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -109,6 +111,7 @@ class LoanController extends Controller
     {
         //
     }
+
     /**
      * Update the specified resource in storage.
      *
@@ -120,6 +123,7 @@ class LoanController extends Controller
     {
         //
     }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -130,34 +134,28 @@ class LoanController extends Controller
     {
         //
     }
+
     public function returnLoan(Request $request)
-    {	
-	    $barcode = $request->barcode;
+    {
+        $barcode = $request->barcode;
+        
         $loanable = Loanable::where('barcode', $barcode)->first();
+
         $loan = Loan::where('loanable_id', $loanable->id)->orderBy('created_at', 'desc')->first();
         
-        if($loanable->state_id == $this->borrowed && $loan->user_return_time == "0000-00-00 00:00:00")
-		{
-		 DB::beginTransaction();
-		try{
-		    $loanable->state_id = $this->available;
+        if($loanable->state_id == $this->borrowed && $loan->user_return_time == "0000-00-00 00:00:00"){
+            $loanable->state_id = $this->available;
             $loan->user_return_time = date('Y-m-d H:i:s');
             $loanable->save();
             $loan->save();
-			//return $loan;
-		} catch(\Exception $e)
-		{
-			DB::rollBack();
-			return null;
-		}
-		DB::commit();
-		return $loan;
-		}
-			return null;
+        }
+        return $loan;
     }
-	
+
     public function returnLoanById(Request $request){
+
         $user = User::find($request->id);
+
         if(isset($user)){
             $loanById = Loan::where('user_id' ,'=', $user->id)->where('user_return_time' ,'=', '0000-00-00 00:00:00')->get();
             foreach ($loanById as $loan) {
