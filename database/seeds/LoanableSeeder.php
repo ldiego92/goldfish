@@ -20,7 +20,7 @@ class LoanableSeeder extends Seeder
         'state_id' => 1,
         'loan_category_id' =>  1,
         ]);
-       for($i=1; $i<20;$i++) {
+       for($i=1; $i<60;$i++) {
              Loanable::Create([
                 $note = $notes[rand(0,count($notes)-1)];
                 'barcode' => "AU18".$i * 3,
