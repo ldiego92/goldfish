@@ -12,6 +12,10 @@ use App\Loanable;
 use App\Loan;
 use App\Penalty;
 use App\Role;
+use App\AudiovisualModel;
+use App\Type;
+use App\Brand;
+use JWTAuth;
 use Auth;
 
 class LoanController extends Controller
@@ -72,11 +76,16 @@ class LoanController extends Controller
         $loan->departure_time = date('Y-m-d H:i:s');
         $loan->user_id = $request->user_id;
         $loan->return_time = $request->return_time;
-        $loan->authorizing_user_id = Auth::user()->id;
+        $loan->authorizing_user_id = JWTAuth::toUser($request->token)->id;
         $loan->loanable_id = $loanable->id; 
 		
 		if($loanable->state_id == $this->available && isset($request->user_id) &&  $request->user_id != null && isset($loanable)){
 			$loanable->state_id = $this->borrowed;
+            $loan->loanable;
+            $loan->loanable->audiovisualEquipment;
+            $loan->loanable->audiovisualEquipment->type;
+            $loan->loanable->audiovisualEquipment->model;
+            $loan->loanable->audiovisualEquipment->brand;
 			$loanable->save();
 			$loan->save();
 			return $loan;
@@ -154,6 +163,9 @@ class LoanController extends Controller
         if($loanable->state_id == $this->borrowed && $loan->user_return_time == "0000-00-00 00:00:00"){
             $loanable->state_id = $this->available;
             $loan->user_return_time = date('Y-m-d H:i:s');
+            $loan->loanable;
+            $loan->loanable->audiovisualEquipment;
+            $loan->loanable->audiovisualEquipment->type;
             $loanable->save();
             $loan->save();
         } 
@@ -176,6 +188,12 @@ class LoanController extends Controller
                     $loan->cartographicMaterial;
                     $loan->threeDimensionalObject;
                 }
+
+                $loan->loanable;
+                $loan->loanable->audiovisualEquipment;
+                $loan->loanable->audiovisualEquipment->type;
+                $loan->loanable->audiovisualEquipment->model;
+                $loan->loanable->audiovisualEquipment->brand;
             }
         }
         return $loanById;

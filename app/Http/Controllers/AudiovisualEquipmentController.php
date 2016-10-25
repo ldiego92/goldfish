@@ -8,9 +8,17 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\AudiovisualEquipment;
 use App\Loanable;
+use App\AudiovisualModel;
+use App\Type;
+use App\Brand;
 
 class AudiovisualEquipmentController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('cros', ['except' => ['create', 'edit']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +26,20 @@ class AudiovisualEquipmentController extends Controller
      */
     public function index()
     {
-        return AudiovisualEquipment::all();
+        $lengthPage = 15;
+
+        $equipments = AudiovisualEquipment::paginate($lengthPage);
+
+        foreach ($equipments as $equipment) {
+            $equipment->model;
+            $equipment->type;
+            $equipment->brand;
+            if($equipment->loanable){
+                $equipment->loanable->state;
+            }
+        }
+
+        return $equipments;
     }
 
     /**

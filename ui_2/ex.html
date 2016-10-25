@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://unpkg.com/vue@2.0.3/dist/vue.js"></script>
+	<script src="https://unpkg.com/vue-router@2.0.1"></script>
+</head>
+<body>
+	<div id="app">
+		<h1>Hello App!</h1>
+		<p>
+			<!-- use router-link component for navigation. -->
+			<!-- specify the link by passing the `to` prop. -->
+			<!-- <router-link> will be rendered as an `<a>` tag by default -->
+			<router-link to="/foo">Go to Foo</router-link>
+			<router-link to="/bar">Go to Bar</router-link>
+			<router-link to="/user/1">Go to User</router-link>
+		</p>
+		<!-- route outlet -->
+		<!-- component matched by the route will render here -->
+		<router-view class="view one"></router-view>
+<router-view class="view two" name="a"></router-view>
+<router-view class="view three" name="b"></router-view>
+	</div>
+	<script>
+		var home = "<div>Hi {{name}} <button v-on:click=alert>alert</button></div>";
+		
+
+		// 0. If using a module system, call Vue.use(VueRouter)
+
+		// 1. Define route components.
+		// These can be imported from other files
+		const Foo = { template: '<div>hello-world-template</div>' }
+		const UserProfile = { template: '<div>UserProfile</div>' }
+		const UserPosts = { template: '<div>UserPosts</div>' }
+		const Bar = { 
+			template: home, 
+			data:function () {
+				return {name: "Diego"}
+			},
+			methods:{
+				alert: function () {
+					alert(this.name);
+				}
+			}
+		}
+		const User = {
+		  template: `
+		    <div class="user">
+		      <h2>User {{ $route.params.id }}</h2>
+		      <router-view></router-view>
+		    </div>
+		  `,
+		  watch: {
+		    '$route' (to, from) {
+		      console.log("to",to,"from", from);
+		    }
+		  }
+		}
+
+		// 2. Define some routes
+		// Each route should map to a component. The "component" can
+		// either be an actual component constructor created via
+		// Vue.extend(), or just a component options object.
+		// We'll talk about nested routes later.
+		const routes = [
+			{ path: '/foo', component: Foo },
+			{ path: '/bar', component: Bar },
+			{ path: '/user/:id', component: User,
+		      children: [
+		        {
+		          // UserProfile will be rendered inside User's <router-view>
+		          // when /user/:id/profile is matched
+		          path: 'profile',
+		          component: UserProfile
+		        },
+		        {
+		          // UserPosts will be rendered inside User's <router-view>
+		          // when /user/:id/posts is matched
+		          path: 'posts',
+		          component: UserPosts
+		        }
+		      ]
+		 	},
+		 	{
+		 		path: '/mix',
+		 		components: {
+		 			default: Foo,
+				    a: Bar,
+				    b: User
+		 		}
+		 			
+		 		
+		 	}
+		]
+
+		// 3. Create the router instance and pass the `routes` option
+		// You can pass in additional options here, but let's
+		// keep it simple for now.
+		const router = new VueRouter({
+		  routes // short for routes: routes
+		})
+
+		// 4. Create and mount the root instance.
+		// Make sure to inject the router with the router option to make the
+		// whole app router-aware.
+		const app = new Vue({
+			router,
+			data: {
+				asd: "Diego"
+			}
+		}).$mount('#app')
+
+		// Now the app has started!
+	</script>
+</body>
+</html>

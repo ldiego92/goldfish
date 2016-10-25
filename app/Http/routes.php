@@ -18,21 +18,20 @@ Route::get('/', function () {
 
 Route::resource('loan','LoanController');
 Route::resource('users','UserController');
-Route::get('login','UserController@login');
-Route::get('logout','UserController@logout');
+Route::post('login','UserController@login');
+Route::post('logout','UserController@logout');
 Route::get('loginPrueba', 'UserController@loginPrueba');
 Route::get('logoutPrueba', 'UserController@logoutPrueba');
 
 Route::group(['middleware' => 'jwt-auth'], function () {
 	Route::post('automatic-loan','LoanController@automaticLoan');
-	Route::get('huhu', 'UserController@huhu');
+	Route::post('search-by-identification','UserController@searchByIdentification');
+	Route::post('loan-by-id', 'LoanController@returnLoanById');
+	Route::resource('audiovisual-equipment', 'AudiovisualEquipmentController');
 });
 
 Route::get('loan-test', 'LoanController@store');
 
-Route::post('search-by-identification','UserController@searchByIdentification');
-Route::get('search-by-identification','UserController@searchByIdentification');
-Route::resource('audiovisual-equipment', 'AudiovisualEquipmentController');
 Route::resource('brand','BrandController');
 Route::resource('model','AudiovisualModelController');
 Route::resource('type','TypeController');

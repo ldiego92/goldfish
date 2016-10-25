@@ -46,18 +46,21 @@ class UserController extends Controller
         //
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        return Auth::logout();
+        $input = $request->all();
+        return (JWTAuth::invalidate($input['token']))?'1':'0';
     }
 
     public function login(Request $request)
     {
-        
-        if(Auth::attempt(['email' =>  $request->email, 'password' =>  $request->password])){
-            return Auth::user();
+        if (!$token = JWTAuth::attempt(['email'=>$request->email, 'password'=>$request->password])) {
+            return response()->json(['error' => 'El usuario o contraseña incorrecta']);
         }
-        return null;
+        $user = JWTAuth::toUser($token);
+        $user->role;
+        $user->student;
+        return response()->json(['token' => $token, 'user' => $user]);
     }
 
     /**
