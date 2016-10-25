@@ -10,8 +10,7 @@ use App\CartographicMaterial;
 use App\BibliographicMaterial;
 use App\Loanable;
 use App\CartographicMaterialKeyWord;
-use App\LoanCategory;
-use DB;
+
 class CartographicMaterialController extends Controller
 {
     /**
@@ -42,22 +41,23 @@ class CartographicMaterialController extends Controller
      */
     public function store(Request $request)
     {
-         $bibliographicMaterial = new BibliographicMaterial();
+        $bibliographicMaterial = new BibliographicMaterial();
         $loanable = new Loanable();
         $cartographicMaterial = new CartographicMaterial();
-        $cartographicMaterialKeyWord =  new CartographicMaterialKeyWord();     
-       
+        $cartographicMaterialKeyWord =  new CartographicMaterialKeyWord;
+        
         $loanable->barcode = $request->barcode;
         $loanable->note = $request->note;
         $loanable->state_id = $request->state_id;
-        $loanable->loan_category_id = $request->loan_category_id;
         $loanable->save();
         
+        $loanableId = Loanable::where('barcode', $request->barcode)->first->id;
+
         $bibliographicMaterial->year = $request->year;
         $bibliographicMaterial->signature = $request->signature;
         $bibliographicMaterial->publication_place = $request->publication_place;
         $bibliographicMaterial->editorial_id = $request->editorial_id;
-        $bibliographicMaterial->loanable_id = $loanable->id;        
+        $bibliographicMaterial->loanable_id = $loanableId;        
         $bibliographicMaterial->save();
         
         $cartographicMaterial->bibliographic_materials_id = $bibliographicMaterial->id;        
@@ -65,14 +65,12 @@ class CartographicMaterialController extends Controller
         $cartographicMaterial->dimension = $request->dimension;
         $cartographicMaterial->save();
         
-        $cartographicMaterialKeyWord->cartographic_material_id = $cartographicMaterial->id;
         $cartographicMaterialKeyWord->key_word_id = $request->key_word_id;
+        $cartographicMaterialKeyWord->cartographic_material_id = $cartographicMaterial->id;
         $cartographicMaterialKeyWord->save();
         
-        return $cartographicMaterial;
+        return $cartographicMaterial; 
     }
-    
-    
 
     /**
      * Display the specified resource.
@@ -107,32 +105,27 @@ class CartographicMaterialController extends Controller
     {
         $cartographicMaterial = CartographicMaterial::find($id);
         $bibliographicMaterial = BibliographicMaterial::find($cartographicMaterial->bibliographic_materials_id);
-        $loanable = Loanable::find($bibliographicMaterial->loanable_id);
+        $loanable = Loanable::find($cartographicMaterial->loanable_id);       
         
-        $cartographicMaterialKeyWord =  CartographicMaterialKeyWord::find($cartographicMaterial->id);     
-       
+        
         $loanable->barcode = $request->barcode;
         $loanable->note = $request->note;
         $loanable->state_id = $request->state_id;
-        $loanable->loan_category_id = $request->loan_category_id;
         $loanable->save();
         
+        $loanableId = Loanable::where('barcode', $request->barcode)->first->id;
+
         $bibliographicMaterial->year = $request->year;
         $bibliographicMaterial->signature = $request->signature;
         $bibliographicMaterial->publication_place = $request->publication_place;
         $bibliographicMaterial->editorial_id = $request->editorial_id;
-        $bibliographicMaterial->loanable_id = $loanable->id;        
+        $bibliographicMaterial->loanable_id = $loanableId;        
         $bibliographicMaterial->save();
         
         $cartographicMaterial->bibliographic_materials_id = $bibliographicMaterial->id;        
         $cartographicMaterial->cartographic_format_id = $request->cartographic_format_id;
         $cartographicMaterial->dimension = $request->dimension;
-        $cartographicMaterial->save();
-        
-        $cartographicMaterialKeyWord->cartographic_material_id = $cartographicMaterial->id;
-        $cartographicMaterialKeyWord->key_word_id = $request->key_word_id;
-        $cartographicMaterialKeyWord->save();
-        
+        $cartographicMaterial->save();        
         
         return $cartographicMaterial;
     }
@@ -147,20 +140,14 @@ class CartographicMaterialController extends Controller
     {
         $cartographicMaterial = CartographicMaterial::find($id);
         $id_bibliographicMaterial = $cartographicMaterial->bibliographic_materials_id;
-        $bibliographicMaterial = BibliographicMaterial::find($id_bibliographicMaterial);
-        $id_loanable = $bibliographicMaterial->loanable_id;
-              
+        $id_loanable = $cartographicMaterial->loanable_id;
+        
+        
+        CartographicMaterial::destroy($id);
+        BibliographicMaterial::destroy($id_bibliographicMaterial);
+        Loanable::destroy($id_loanable);        
         DB::table('cartographic_material_key_words')->where('cartographic_material_id', $cartographicMaterial->id)->delete();
         
-        $del1 = CartographicMaterial::destroy($id);
-        $del2 = BibliographicMaterial::destroy($id_bibliographicMaterial);
-        $del3 = Loanable::destroy($id_loanable);
-		if($del1==true && $del2==true && $del3==true) {
-		return 1;
-		}
-		return 0;
+        return 1;
     }
-    
-    
-
 }

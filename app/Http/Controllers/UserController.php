@@ -9,8 +9,6 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Role;
 use App\Student;
-use Hash;
-use JWTAuth;
 use Auth;
 
 class UserController extends Controller
@@ -20,8 +18,6 @@ class UserController extends Controller
     {
         $this->middleware('cros', ['except' => ['create', 'edit']]);
     }
-
-
     /**
      * Display a listing of the resource.
      *
@@ -56,6 +52,7 @@ class UserController extends Controller
     {
         if (!$token = JWTAuth::attempt(['email'=>$request->email, 'password'=>$request->password])) {
             return response()->json(['error' => 'El usuario o contraseña incorrecta']);
+
         }
         $user = JWTAuth::toUser($token);
         $user->role;
@@ -100,24 +97,24 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        /*$user = Auth::user();
-        if($user->id == $id || $user->role_id == 1){*/
+        $user = Auth::user();
+        if($user->id == $id || $user->role_id == 1){
 
             $userFind = User::find($id);
             $userFind->role;
-            $userFind->student;
             return $userFind;
             
-        /*}
-        return null;*/
+        }
+        return null;
     }
 	
 	public function searchByName(Request $request){
 		$txt = $request->txt;
 		$txts = explode(" " , $txt);
 		$result = null;
+		
 		if(isset($txts[1])) {
-			$result = User::where('name', 'like','%'.$txts[0].'%')->orwhere('last_name', 'like','%'.$txts[1].'%')->get();
+			$result = User::where('name', 'like','%'.$txts[0].'%')->where('last_name', 'like','%'.$txts[1].'%')->get();
 		} else {
 			$result = User::where('name', 'like','%'.$txts[0].'%')->orwhere('last_name', 'like','%'.$txts[0].'%')->get();
 		}
@@ -181,7 +178,7 @@ class UserController extends Controller
     }
 	
     public function searchByIdentification(Request $request){
-        //sleep(1);
+        sleep(1);
 
         $student = Student::where('license', $request->identification)->first();
          if(isset($student)){
@@ -198,32 +195,6 @@ class UserController extends Controller
          if(isset($user)){
             return $user;
          }
-         return response(["response" => "empty"]);
-    }
-
-
-    public function loginPrueba(Request $request){
-
-        $input = $request->all();
-
-        $get = $token = JWTAuth::attempt($input);
-        if (!$token = JWTAuth::attempt($input)) {
-            return response()->json(['result' => 'El usuario o contraseña no es correcta']);
-        }
-             return response()->json(['result' => $token]);
-    }
-
-         public function huhu(Request $request)
-    {
-        $input = $request->all();
-        $user = JWTAuth::toUser($input['token']);
-        return response()->json(['result' => $user]);
-    }
-
-    public function logoutPrueba(Request $request){
-         $input = $request->all();
-
-        //JWTAuth::invalidate($input['token']);
-        return (JWTAuth::invalidate($input['token']))?'1':'0';
+         return null;
     }
 }
