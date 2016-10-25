@@ -4,6 +4,8 @@ use Illuminate\Database\Seeder;
 use App\AudiovisualType;
 class AudiovisualTypeSeeder extends Seeder
 {
+
+    $names = ["Portatil", "Cable HMDI", "Cable VGA", "Proyector", "Regleta", "Parlante", "Extension", "TV", "Planta de sonido", "Microfono", "Tablet", "Aula", "Grabadora"];
     /**
      * Run the database seeds.
      *
@@ -13,10 +15,9 @@ class AudiovisualTypeSeeder extends Seeder
     {
         for($i=0;$i < 20; $i++){
         	AudiovisualType::create([
-
-        		'name'    =>  'type_'.$i,
+                $name = $names[rand(0,count($names)-1)];
+        		'name' => $name,
         		]);
-
         }
     }
 }
